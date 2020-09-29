@@ -12,7 +12,13 @@ for (k in unique(July)){
   assign(k,Object)
 }
 July89_93<-July[1:5]
-July95_05<-July[6:14]
+July95<-July[6]
+July96<-July[7]
+July97<-July[8]
+July98<-July[9]
+July99<-July[10]
+July01_04<-July[11:13]
+July05<-July[14]
 July08<-July[15]
 July09_10<-July[16:17]
 July11_12<-July[18:19]
@@ -20,12 +26,358 @@ July13<-July[20]
 July14_18<-July[21:24]
 July19_20<-July[25:26]
 
+PDFs_July95<-unlist(lapply(July95,function(s) eval(parse(text=s))))
+PDFs_July96<-unlist(lapply(July96,function(s) eval(parse(text=s))))
+PDFs_July97<-unlist(lapply(July97,function(s) eval(parse(text=s))))
+PDFs_July98<-unlist(lapply(July98,function(s) eval(parse(text=s))))
+PDFs_July99<-unlist(lapply(July99,function(s) eval(parse(text=s))))
+PDFs_July01_04<-unlist(lapply(July01_04,function(s) eval(parse(text=s))))
+PDFs_July05<-unlist(lapply(July05,function(s) eval(parse(text=s))))
 PDFs_July08<-unlist(lapply(July08,function(s) eval(parse(text=s))))
 PDFs_July09_10<-unlist(lapply(July09_10,function(s) eval(parse(text=s))))
 PDFs_July11_12<-unlist(lapply(July11_12,function(s) eval(parse(text=s))))
 PDFs_July13<-unlist(lapply(July13,function(s) eval(parse(text=s))))
 PDFs_July14_18<-unlist(lapply(July14_18,function(s) eval(parse(text=s))))
 PDFs_July19_20<-unlist(lapply(July19_20,function(s) eval(parse(text=s))))
+
+####1995
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+CivAdd<-NULL
+Yindex<-NULL
+Year<-NULL
+for (l in unique(PDFs_July95)){
+  out <- pdftools::pdf_text(l)
+  d <- pdftools::pdf_data(l)[2]
+  d1<-d[[1]]
+  yvals<-unique(d1$y)
+  yvals<-yvals[yvals>103&yvals!=428&yvals!=446&yvals!=464&yvals!=546&yvals!=564&yvals!=582&yvals!=600&yvals!=672]
+  
+  for (i in unique(yvals)){
+    yi<-subset(d1,d1$y==i) 
+    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    nm<-paste(n[2:length(n)],collapse=" ")
+    abr<-n[1]
+    B<-grep('^[1-9]', yi$text, value = TRUE)
+    PC<-B[4]
+    DC<-B[3]
+    FO<-B[1]
+    SC<-B[5]
+    TO<-B[2]
+    CA<-B[6]
+    name<-c(name,nm)
+    abrev<-c(abrev,abr)
+    PercCap<-c(PercCap,PC)
+    DesCap<-c(DesCap,DC)
+    FelOth<-c(FelOth,FO)
+    StafCap<-c(StafCap,SC)
+    Total<-c(Total,TO)
+    CivAdd<-c(CivAdd,CA)
+    Yindex<-c(Yindex,yi$y[1])
+    Year<-c(Year,l)
+  }
+  Occup95<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Total,CivAdd,Yindex,Year)
+  Occup95<-as.data.frame(Occup95)
+  Occup95$name[Occup95$name=="NA NA"]<-"Total"
+  Occup95$name[Occup95$name=="NA FEMALE"]<-"Female Total"
+  Occup95$name[Occup95$name=="NA MALE"]<-"Male Total"
+}
+
+####1996
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+CivAdd<-NULL
+Yindex<-NULL
+Year<-NULL
+for (l in unique(PDFs_July96)){
+  out <- pdftools::pdf_text(l)
+  d <- pdftools::pdf_data(l)[2]
+  d1<-d[[1]]
+  yvals<-unique(d1$y)
+  yvals<-yvals[yvals>103&yvals!=455&yvals!=473&yvals!=491&yvals!=573&yvals!=591&yvals!=609&yvals!=627&yvals!=654]
+  
+  for (i in unique(yvals)){
+    yi<-subset(d1,d1$y==i) 
+    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    nm<-paste(n[2:length(n)],collapse=" ")
+    abr<-n[1]
+    B<-grep('^[1-9]', yi$text, value = TRUE)
+    PC<-B[4]
+    DC<-B[3]
+    FO<-B[1]
+    SC<-B[5]
+    TO<-B[2]
+    CA<-B[6]
+    name<-c(name,nm)
+    abrev<-c(abrev,abr)
+    PercCap<-c(PercCap,PC)
+    DesCap<-c(DesCap,DC)
+    FelOth<-c(FelOth,FO)
+    StafCap<-c(StafCap,SC)
+    Total<-c(Total,TO)
+    CivAdd<-c(CivAdd,CA)
+    Yindex<-c(Yindex,yi$y[1])
+    Year<-c(Year,l)
+  }
+  Occup96<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Total,CivAdd,Yindex,Year)
+  Occup96<-as.data.frame(Occup96)
+  Occup96$name[Occup96$name=="NA NA"]<-"Total"
+  Occup96$name[Occup96$name=="NA FEMALE"]<-"Female Total"
+  Occup96$name[Occup96$name=="NA MALE"]<-"Male Total"
+}
+
+####1997
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+CivAdd<-NULL
+Yindex<-NULL
+Year<-NULL
+for (l in unique(PDFs_July97)){
+  out <- pdftools::pdf_text(l)
+  d <- pdftools::pdf_data(l)[2]
+  d1<-d[[1]]
+  yvals<-unique(d1$y)
+  yvals<-yvals[yvals>103&yvals!=464&yvals!=482&yvals!=500&yvals!=582&yvals!=600&yvals!=618&yvals!=636&yvals!=654]
+  for (i in unique(yvals)){
+    yi<-subset(d1,d1$y==i) 
+    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    nm<-paste(n[2:length(n)],collapse=" ")
+    abr<-n[1]
+    B<-grep('^[1-9]', yi$text, value = TRUE)
+    PC<-B[4]
+    DC<-B[3]
+    FO<-B[1]
+    SC<-B[5]
+    TO<-B[2]
+    CA<-B[6]
+    name<-c(name,nm)
+    abrev<-c(abrev,abr)
+    PercCap<-c(PercCap,PC)
+    DesCap<-c(DesCap,DC)
+    FelOth<-c(FelOth,FO)
+    StafCap<-c(StafCap,SC)
+    Total<-c(Total,TO)
+    CivAdd<-c(CivAdd,CA)
+    Yindex<-c(Yindex,yi$y[1])
+    Year<-c(Year,l)
+  }
+  Occup97<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Total,CivAdd,Yindex,Year)
+  Occup97<-as.data.frame(Occup97)
+  Occup97$name[Occup97$name=="NA NA"]<-"Total"
+  Occup97$name[Occup97$name=="NA FEMALE"]<-"Female Total"
+  Occup97$name[Occup97$name=="NA MALE"]<-"Male Total"
+}
+
+####1998
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+CivAdd<-NULL
+Yindex<-NULL
+Year<-NULL
+for (l in unique(PDFs_July98)){
+  out <- pdftools::pdf_text(l)
+  d <- pdftools::pdf_data(l)[2]
+  d1<-d[[1]]
+  yvals<-unique(d1$y)
+  yvals<-yvals[yvals>103&yvals!=491&yvals!=473&yvals!=509&yvals!=627&yvals!=591&yvals!=609&yvals!=645&yvals!=663]
+  
+  for (i in unique(yvals)){
+    yi<-subset(d1,d1$y==i) 
+    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    nm<-paste(n[2:length(n)],collapse=" ")
+    abr<-n[1]
+    B<-grep('^[1-9]', yi$text, value = TRUE)
+    PC<-B[4]
+    DC<-B[3]
+    FO<-B[1]
+    SC<-B[5]
+    TO<-B[2]
+    CA<-B[6]
+    name<-c(name,nm)
+    abrev<-c(abrev,abr)
+    PercCap<-c(PercCap,PC)
+    DesCap<-c(DesCap,DC)
+    FelOth<-c(FelOth,FO)
+    StafCap<-c(StafCap,SC)
+    Total<-c(Total,TO)
+    CivAdd<-c(CivAdd,CA)
+    Yindex<-c(Yindex,yi$y[1])
+    Year<-c(Year,l)
+  }
+  Occup98<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Total,CivAdd,Yindex,Year)
+  Occup98<-as.data.frame(Occup98)
+  Occup98$name[Occup98$name=="NA NA"]<-"Total"
+  Occup98$name[Occup98$name=="NA FEMALE"]<-"Female Total"
+  Occup98$name[Occup98$name=="NA MALE"]<-"Male Total"
+}
+
+####1999
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+CivAdd<-NULL
+Yindex<-NULL
+Year<-NULL
+for (l in unique(PDFs_July99)){
+  out <- pdftools::pdf_text(l)
+  d <- pdftools::pdf_data(l)[2]
+  d1<-d[[1]]
+  yvals<-unique(d1$y)
+  yvals<-yvals[yvals>103&yvals!=491&yvals!=473&yvals!=509&yvals!=627&yvals!=591&yvals!=609&yvals!=645&yvals!=663]
+  
+  for (i in unique(yvals)){
+    yi<-subset(d1,d1$y==i) 
+    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    nm<-paste(n[2:length(n)],collapse=" ")
+    abr<-n[1]
+    B<-grep('^[1-9]', yi$text, value = TRUE)
+    PC<-B[4]
+    DC<-B[3]
+    FO<-B[1]
+    SC<-B[5]
+    TO<-B[2]
+    CA<-B[6]
+    name<-c(name,nm)
+    abrev<-c(abrev,abr)
+    PercCap<-c(PercCap,PC)
+    DesCap<-c(DesCap,DC)
+    FelOth<-c(FelOth,FO)
+    StafCap<-c(StafCap,SC)
+    Total<-c(Total,TO)
+    CivAdd<-c(CivAdd,CA)
+    Yindex<-c(Yindex,yi$y[1])
+    Year<-c(Year,l)
+  }
+  Occup99<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Total,CivAdd,Yindex,Year)
+  Occup99<-as.data.frame(Occup99)
+  Occup99$name[Occup99$name=="NA NA"]<-"Total"
+  Occup99$name[Occup99$name=="NA FEMALE"]<-"Female Total"
+  Occup99$name[Occup99$name=="NA MALE"]<-"Male Total"
+}
+
+
+
+######2001-2004
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+CivAdd<-NULL
+Yindex<-NULL
+Year<-NULL
+for (l in unique(PDFs_July01_04)){
+  out <- pdftools::pdf_text(l)
+  d <- pdftools::pdf_data(l)[2]
+  d1<-d[[1]]
+  yvals<-unique(d1$y)
+  yvals<-yvals[yvals>103&yvals!=481&yvals!=500&yvals!=518&yvals!=599&yvals!=617&yvals!=636&yvals!=654&yvals!=663]
+  
+  for (i in unique(yvals)){
+    yi<-subset(d1,d1$y==i) 
+    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    nm<-paste(n[2:length(n)],collapse=" ")
+    abr<-n[1]
+    B<-grep('^[1-9]', yi$text, value = TRUE)
+    PC<-B[4]
+    DC<-B[3]
+    FO<-B[1]
+    SC<-B[5]
+    TO<-B[2]
+    CA<-B[6]
+    name<-c(name,nm)
+    abrev<-c(abrev,abr)
+    PercCap<-c(PercCap,PC)
+    DesCap<-c(DesCap,DC)
+    FelOth<-c(FelOth,FO)
+    StafCap<-c(StafCap,SC)
+    Total<-c(Total,TO)
+    CivAdd<-c(CivAdd,CA)
+    Yindex<-c(Yindex,yi$y[1])
+    Year<-c(Year,l)
+  }
+  Occup01_04<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Total,CivAdd,Yindex,Year)
+  Occup01_04<-as.data.frame(Occup01_04)
+  Occup01_04$name[Occup01_04$name=="NA NA"]<-"Total"
+  Occup01_04$name[Occup01_04$name=="NA FEMALE"]<-"Female Total"
+  Occup01_04$name[Occup01_04$name=="NA MALE"]<-"Male Total"
+}
+
+
+####2005
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+CivAdd<-NULL
+Yindex<-NULL
+Year<-NULL
+for (l in unique(PDFs_July05)){
+  out <- pdftools::pdf_text(l)
+  d <- pdftools::pdf_data(l)[2]
+  d1<-d[[1]]
+  yvals<-unique(d1$y)
+  yvals<-yvals[yvals>103&yvals!=500&yvals!=518&yvals!=536&yvals!=617&yvals!=636&yvals!=654&yvals!=672&yvals!=681]
+  
+  for (i in unique(yvals)){
+    yi<-subset(d1,d1$y==i) 
+    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    nm<-paste(n[2:length(n)],collapse=" ")
+    abr<-n[1]
+    B<-grep('^[1-9]', yi$text, value = TRUE)
+    PC<-B[4]
+    DC<-B[3]
+    FO<-B[1]
+    SC<-B[5]
+    TO<-B[2]
+    CA<-B[6]
+    name<-c(name,nm)
+    abrev<-c(abrev,abr)
+    PercCap<-c(PercCap,PC)
+    DesCap<-c(DesCap,DC)
+    FelOth<-c(FelOth,FO)
+    StafCap<-c(StafCap,SC)
+    Total<-c(Total,TO)
+    CivAdd<-c(CivAdd,CA)
+    Yindex<-c(Yindex,yi$y[1])
+    Year<-c(Year,l)
+  }
+  Occup05<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Total,CivAdd,Yindex,Year)
+  Occup05<-as.data.frame(Occup05)
+  Occup05$name[Occup05$name=="NA NA"]<-"Total"
+  Occup05$name[Occup05$name=="NA FEMALE"]<-"Female Total"
+  Occup05$name[Occup05$name=="NA MALE"]<-"Male Total"
+}
+
 
 ####2008
 PercCap<-NULL
@@ -312,6 +664,12 @@ for (l in unique(PDFs_July19_20)){
   
 }
 
+
+Occupancy<-rbind(Occup95,Occup96,Occup97,Occup98,Occup99,Occup01_04,Occup05,Occup08,Occup910,Occup11_12,Occup13,Occup14_18)
+detach("package:dplyr", unload = TRUE)
+library(plyr)
+Occupancy<-rbind.fill(Occupancy,Occup19_20)
+write.csv(Occupancy,"Occupany.csv")
 #out <- tabulizer::extract_tables(pdf)
 #webpage <- "https://web.archive.org/web/20071214123130/http://www.cdcr.ca.gov/Visitors/docs/20071015-WEBmapbooklet.pdf"
 #out <- tabulizer::extract_tables(webpage)
