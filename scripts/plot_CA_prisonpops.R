@@ -26,7 +26,7 @@ occupancy <- read_csv("../data/Occupany.csv") %>%
                             TRUE ~ as.character(.$abbrev))) %>%
   mutate(PercCap = case_when(is.na(PercCap) ~ (FelOth/DesCap)*100,
                                  TRUE ~ .$PercCap)) %>%
-  dplyr::mutate(Percent_Occupancy_fix = (FelOth/DesCap)*100)  %>% #if you look, some of the provided PercCaps don't match the ratio of inmates to design capacity
+  dplyr::mutate(Percent_occupancy_fix = (FelOth/DesCap)*100)  %>% #if you look, some of the provided PercCaps don't match the ratio of inmates to design capacity
   mutate(Year = str_extract(Year,"[:digit:]{4}")) %>%
   mutate(name = case_when((abbrev == "VSP" & Year < 2013) ~ "VALLEY SP WOMEN",
                            TRUE ~ as.character(.$name))) %>%
@@ -38,10 +38,24 @@ occupancy <- read_csv("../data/Occupany.csv") %>%
                            ~ "women",
                            TRUE ~ "men")) %>%
   ungroup() %>%
-  dplyr::select(everything(), - X1, -abrev) %>%
+  dplyr::select(everything(), - X1, -abrev, -Yindex) %>%
   mutate(Prison_or_Jail_in_2020 = case_when((str_detect(abbrev, "PDC") | str_detect(abbrev, "RIO") | str_detect(abbrev, "SRTA") | str_detect(abbrev, "SBRN") | str_detect(abbrev, "FRCC"))
                                     ~ "county_jail",
-                                    TRUE ~ "state_prison"))
+                                    TRUE ~ "state_prison")) %>%
+  mutate(color = case_when(Percent_occupancy_fix >= 2000 ~ "red",
+         2000 > Percent_occupancy_fix & Percent_occupancy_fix >= 1000 ~ "red2",
+         1000 > Percent_occupancy_fix & Percent_occupancy_fix >= 500 ~ "red3",
+         500 > Percent_occupancy_fix & Percent_occupancy_fix >= 300 ~ "orangered",
+         300 > Percent_occupancy_fix & Percent_occupancy_fix >= 200 ~ "orangered3",
+         200 > Percent_occupancy_fix & Percent_occupancy_fix >= 150 ~ "tomato3",
+         150 > Percent_occupancy_fix & Percent_occupancy_fix >= 125 ~ "indianred3",
+         125 > Percent_occupancy_fix & Percent_occupancy_fix >= 110 ~ "mediumorchid1",
+         110 > Percent_occupancy_fix & Percent_occupancy_fix >= 100 ~ "purple",
+         100 > Percent_occupancy_fix & Percent_occupancy_fix >= 90 ~ "purple3",
+         90 > Percent_occupancy_fix & Percent_occupancy_fix >= 80 ~ "blue2",
+         80 > Percent_occupancy_fix & Percent_occupancy_fix >= 60 ~ "blue3",
+         60 > Percent_occupancy_fix & Percent_occupancy_fix >= 40 ~ "navy",
+         40 > Percent_occupancy_fix & Percent_occupancy_fix >= 0 ~ "midnightblue"))
 
 
 #
@@ -117,12 +131,12 @@ set_year = 2020 #set the year you want here
 
 ggplot() + geom_polygon(data = ggplot2::map_data("state")  %>% # united states data
                           filter(., region == "california"), aes(x = long, y = lat, group = group), alpha = 0.25) + #plot of California
-  geom_point(data = full_data %>% dplyr::filter(Year == set_year), aes(x = long, y = lat, fill = Percent_Occupancy_fix, size = Inmates), alpha = 0.8, shape = 21) + #add bubbles
+  geom_point(data = full_data %>% dplyr::filter(Year == set_year), aes(x = long, y = lat, fill = Percent_occupancy_fix, size = Inmates), alpha = 0.8, shape = 21) + #add bubbles
   theme_classic() + 
   scale_fill_gradient(low="blue", high="red") + 
   #scale_colour_gradientn(colours = myPalette(100), limits=c(0, 3600)) +
   geom_text() +
   annotate("text", label = paste0("Total Prison Population: ",sum(full_data %>% filter(Year == set_year) %>% dplyr::select(Inmates), na.rm = T)), x = -117.0, y = 40.0, size = 3, colour = "black") + 
   geom_text() +
-  annotate("text", label = paste0("Average prison occupancy: ", round(mean(as.numeric(unlist(full_data %>% filter(Year == set_year) %>% dplyr::select(Percent_Occupancy_fix)), na.rm = T), , digits = 5)) ,"%"), x = -117.0, y = 41.0, size = 4, colour = "black") 
+  annotate("text", label = paste0("Average prison occupancy: ", round(mean(as.numeric(unlist(full_data %>% filter(Year == set_year) %>% dplyr::select(Percent_occupancy_fix)), na.rm = T), , digits = 5)) ,"%"), x = -117.0, y = 41.0, size = 4, colour = "black") 
 
