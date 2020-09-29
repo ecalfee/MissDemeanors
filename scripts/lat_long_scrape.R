@@ -65,4 +65,3 @@ lat_long[lat_long$abbrev=="MCSP", "lat"] <- 38.370631
 lat_long[lat_long$abbrev=="MCSP", "long"] <- -120.953728
 
 saveRDS(lat_long, "../data/prisons_lat_long_values.RDS")
-test <- readRDS("../data/prisons_lat_long_values.RDS")
