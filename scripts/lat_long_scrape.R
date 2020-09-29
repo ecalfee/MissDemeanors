@@ -64,5 +64,5 @@ lat_long[lat_long$abbrev=="HDSP", "long"] <- -120.526065
 lat_long[lat_long$abbrev=="MCSP", "lat"] <- 38.370631
 lat_long[lat_long$abbrev=="MCSP", "long"] <- -120.953728
 
-#write_csv(lat_long, "../data/prisons_lat_long_values.csv")
-
+saveRDS(lat_long, "../data/prisons_lat_long_values.RDS")
+test <- readRDS("../data/prisons_lat_long_values.RDS")
