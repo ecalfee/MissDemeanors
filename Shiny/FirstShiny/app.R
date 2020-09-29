@@ -16,7 +16,8 @@ library(dplyr)  # For filtering and manipulating data
 #Now we load all the data we need
 #Barley <- as.data.frame(beaven.barley)
 MapData<-readRDS("../../data/full_data.RDS")
-MapData<-as.data.frame(MapData)
+#MapData<-as.data.frame(MapData)
+MapData$Year = as.integer(MapData$Year)
 
 #This fits the layout of the webapp to our figure
 #titlePanel() indicates that we would like a separate panel at the top of the page in which we can put the title.
@@ -62,15 +63,23 @@ ui <-
 server <- function(input, output) {
     output$myMap <- renderPlot(ggplot() + geom_polygon(data = ggplot2::map_data("state")  %>% # united states data
                                                             filter(., region == "california"), aes(x = long, y = lat, group = group), alpha = 0.25) + #plot of California
-                                    geom_point(data = MapData %>% dplyr::filter(Year == input), aes(x = long, y = lat, fill = percent_bin, size = Inmates), alpha = 0.8, shape = 21) + #add bubbles
+                                    geom_point(data = MapData %>% dplyr::filter(Year == input$Year), aes(x = long, y = lat, fill = percent_bin, size = Inmates), alpha = 0.8, shape = 21) + #add bubbles
                                     theme_classic() + 
                                     #scale_color_discrete(values = colors_percent) +
                                     #scale_fill_gradient(low="blue", high="red") + 
                                     #scale_colour_gradientn(colours = myPalette(100), limits=c(0, 3600)) +
                                     geom_text() +
-                                    annotate("text", label = paste0("Total Prison Population: ",sum(MapData %>% filter(Year == input) %>% dplyr::select(Inmates), na.rm = T)), x = -117.0, y = 40.0, size = 3, colour = "black") + 
+                                    annotate("text", label = paste0("Total Prison Population: ", 
+                                                                    sum(MapData %>% filter(Year == input$Year) %>% 
+                                                                          dplyr::select(Inmates), na.rm = T)), 
+                                             x = -117.0, y = 40.0, size = 3, colour = "black") + 
                                     geom_text() +
-                                    annotate("text", label = paste0("Average prison occupancy: ", round(mean(as.numeric(unlist(MapData %>% filter(Year == input) %>% dplyr::select(Percent_occupancy_fix)), na.rm = T), digits = 5)) ,"%"), x = -117.0, y = 41.0, size = 4, colour = "black") )
+                                    annotate("text", label = paste0("Average prison occupancy: ", 
+                                                                    round(mean(as.numeric(unlist(MapData %>% filter(Year == input$Year) %>% 
+                                                                                                   dplyr::select(Percent_occupancy_fix)), 
+                                                                                          na.rm = T), digits = 5)) ,"%"), 
+                                             x = -117.0, y = 41.0, 
+                                             size = 4, colour = "black") )
                                 
         
         #ggplot(Barley, aes(x = yield)) + 
@@ -78,15 +87,6 @@ server <- function(input, output) {
                                                    #data=Barley[Barley$gen == input$gen,],
                                                    #colour = "black"))
     
-    output$mytext <- renderText(input$text)
-    
-    output$mytable <- renderTable(Barley %>%
-                                      filter(gen == input$gen) %>%
-                                      summarise("Mean" = mean(yield), 
-                                                "Median" = median(yield),
-                                                "STDEV" = sd(yield), 
-                                                "Min" = min(yield),
-                                                "Max" = max(yield)))
 }
 
 # Run the app ----
