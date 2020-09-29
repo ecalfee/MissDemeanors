@@ -87,9 +87,9 @@ full_address_list <- bind_rows(clean_scrape,missing_addresses) %>%
   mutate(abbrev = str_extract(Facility, "[:upper:]{2,}"))
 
 lat_long <- full_address_list %>%
-  tidygeocoder::geocode(address_list,address = Address, method = "cascade") %>%
+  tidygeocoder::geocode(., address = Address, method = "cascade") %>%
   dplyr::rename(lat_specific = lat, long_specific = long) %>%
-  tidygeocoder::geocode(address_list, address = Zip, method = "osm") %>%
+  tidygeocoder::geocode(., address = Zip, method = "osm") %>%
   dplyr::mutate(lat = dplyr::coalesce(lat_specific,lat)) %>%
   dplyr::mutate(long = dplyr::coalesce(long_specific,long)) %>%
   dplyr::select(everything(), -Zip, - lat_specific, -long_specific, - geo_method)
