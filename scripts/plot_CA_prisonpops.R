@@ -68,6 +68,7 @@ lat_long <- readRDS("../data/prisons_lat_long_values.RDS")
 #add occupancy data and lat/long data
 full_data <- full_join(lat_long, occupancy, by = "abbrev")
 
+
 # plotting the map with  points on it
 
 set_year = 2020 #set the year you want here
@@ -76,7 +77,7 @@ ggplot() + geom_polygon(data = ggplot2::map_data("state")  %>% # united states d
                           filter(., region == "california"), aes(x = long, y = lat, group = group), alpha = 0.25) + #plot of California
   geom_point(data = full_data %>% dplyr::filter(Year == set_year), aes(x = long, y = lat, fill = percent_bin, size = Inmates), alpha = 0.8, shape = 21) + #add bubbles
   theme_classic() + 
-  scale_color_discrete(values = colors_percent) +
+  #scale_color_discrete(values = colors_percent) +
   #scale_fill_gradient(low="blue", high="red") + 
   #scale_colour_gradientn(colours = myPalette(100), limits=c(0, 3600)) +
   geom_text() +
