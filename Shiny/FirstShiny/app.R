@@ -10,11 +10,12 @@
 library(shiny)
 library(ggplot2)  # For creating pretty plots
 library(dplyr)  # For filtering and manipulating data
-library(agridat) 
+#library(agridat) 
 
 
 #Now we load all the data we need
 #Barley <- as.data.frame(beaven.barley)
+MapData<-readRDS("../../data/full_data.RDS")
 MapData<-as.data.frame(MapData)
 
 #This fits the layout of the webapp to our figure
@@ -29,20 +30,10 @@ ui <-
         sidebarLayout(
             position = "right",
             sidebarPanel(h3("Shift By Year"), 
-                         #selectInput("gen", "1. Select genotype", choices = c("A" = "a","B" = "b","C" = "c","D" = "d","E" = "e","F" = "f","G" = "g","H" = "h"), selected = "a"),
-                         #br(),
-                         #selectInput("col", "2. Select histogram colour", choices = c("blue","green","red","purple","grey"), selected = "grey"),
-                         #br(),
-                         #Missing Years: 2000,2003,2006,2007,2017,2019
                          sliderInput(inputId = "Year", "3. Change Year", min=1995, max=2020, value= c(1995)),
-                         br(),
-                         #textInput("text", "4. Enter some text to be displayed", "")),
+                         br()),
             mainPanel(
-                plotOutput("myMap"),
-                tableOutput("mytable"),
-                textOutput("mytext")
-            )
-        )
+                plotOutput("myMap"))
         )
     )
     
@@ -69,17 +60,17 @@ ui <-
 #In this function is where we put the code to make the plot
 # server.R ----
 server <- function(input, output) {
-    output$myMap <- renderPlot(ggplot(MapData) + geom_polygon(data = ggplot2::map_data("state")  %>% # united states data
+    output$myMap <- renderPlot(ggplot() + geom_polygon(data = ggplot2::map_data("state")  %>% # united states data
                                                             filter(., region == "california"), aes(x = long, y = lat, group = group), alpha = 0.25) + #plot of California
-                                    geom_point(data = full_data %>% dplyr::filter(Year == input), aes(x = long, y = lat, fill = percent_bin, size = Inmates), alpha = 0.8, shape = 21) + #add bubbles
+                                    geom_point(data = MapData %>% dplyr::filter(Year == input), aes(x = long, y = lat, fill = percent_bin, size = Inmates), alpha = 0.8, shape = 21) + #add bubbles
                                     theme_classic() + 
                                     #scale_color_discrete(values = colors_percent) +
                                     #scale_fill_gradient(low="blue", high="red") + 
                                     #scale_colour_gradientn(colours = myPalette(100), limits=c(0, 3600)) +
                                     geom_text() +
-                                    annotate("text", label = paste0("Total Prison Population: ",sum(full_data %>% filter(Year == input) %>% dplyr::select(Inmates), na.rm = T)), x = -117.0, y = 40.0, size = 3, colour = "black") + 
+                                    annotate("text", label = paste0("Total Prison Population: ",sum(MapData %>% filter(Year == input) %>% dplyr::select(Inmates), na.rm = T)), x = -117.0, y = 40.0, size = 3, colour = "black") + 
                                     geom_text() +
-                                    annotate("text", label = paste0("Average prison occupancy: ", round(mean(as.numeric(unlist(full_data %>% filter(Year == input) %>% dplyr::select(Percent_occupancy_fix)), na.rm = T), digits = 5)) ,"%"), x = -117.0, y = 41.0, size = 4, colour = "black") )
+                                    annotate("text", label = paste0("Average prison occupancy: ", round(mean(as.numeric(unlist(MapData %>% filter(Year == input) %>% dplyr::select(Percent_occupancy_fix)), na.rm = T), digits = 5)) ,"%"), x = -117.0, y = 41.0, size = 4, colour = "black") )
                                 
         
         #ggplot(Barley, aes(x = yield)) + 
