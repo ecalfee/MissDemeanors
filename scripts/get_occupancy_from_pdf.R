@@ -61,7 +61,9 @@ for (l in unique(PDFs_July95)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i)
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-n[-which(n==notname)]
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-yi$text[(length(yi$text)-5):length(yi$text)]
@@ -110,7 +112,9 @@ for (l in unique(PDFs_July96)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-yi$text[(length(yi$text)-5):length(yi$text)]
@@ -158,7 +162,9 @@ for (l in unique(PDFs_July97)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[-A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[-A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-yi$text[(length(yi$text)-5):length(yi$text)]
@@ -226,6 +232,8 @@ for (l in unique(PDFs_July98)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -295,7 +303,9 @@ for (l in unique(PDFs_July99)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>190) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -349,7 +359,7 @@ for (l in unique(PDFs_July01_04)){
   #the first letter of the column header is usually roughly 20 units into the column
   #and the column will span 50 units past that first letter
   FelonX<-d1$x[d1$text=="FELON/"]
-  FelonXRange<-c(FelonX-20,FelonX+20)
+  FelonXRange<-c(FelonX-20,FelonX+30)
   CivilAddictX<-d1$x[d1$text=="CIVIL"]
   CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
   TotalX<-d1$x[d1$text=="TOTAL"]
@@ -367,10 +377,12 @@ for (l in unique(PDFs_July01_04)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    B<-subset(yi,yi$x>190) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
     PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
     DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
     FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
@@ -438,7 +450,9 @@ for (l in unique(PDFs_July05)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -508,7 +522,9 @@ for (l in unique(PDFs_July08)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -578,7 +594,9 @@ for (l in unique(PDFs_July09_10)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -647,7 +665,9 @@ for (l in unique(PDFs_July11_12)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -716,7 +736,9 @@ for (l in unique(PDFs_July13)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -784,7 +806,9 @@ for (l in unique(PDFs_July14_18)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
@@ -849,7 +873,9 @@ for (l in unique(PDFs_July19_20)){
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
     yi<-yi[order(yi$x),]
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    n<-grep('^[A-Za-z () -]+$', yi$text, value = TRUE)
+    notname<-n[grep('^-$',n)]
+    n<-if(length(notname)>=1) n[-which(n==notname)] else n
     nm<-paste(n[1:(length(n)-1)],collapse=" ")
     abr<-n[length(n)]
     B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
