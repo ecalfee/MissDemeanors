@@ -59,17 +59,18 @@ for (l in unique(PDFs_July95)){
   yvals<-yvals[yvals>103&yvals!=428&yvals!=446&yvals!=464&yvals!=546&yvals!=564&yvals!=582&yvals!=600&yvals!=672]
   
   for (i in unique(yvals)){
-    yi<-subset(d1,d1$y==i) 
+    yi<-subset(d1,d1$y==i)
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
+    B<-yi$text[(length(yi$text)-5):length(yi$text)]
+    PC<-B[5]
+    DC<-B[4]
     FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    SC<-B[6]
+    TO<-B[3]
+    CA<-B[2]
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -108,16 +109,17 @@ for (l in unique(PDFs_July96)){
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
+    B<-yi$text[(length(yi$text)-5):length(yi$text)]
+    PC<-B[5]
+    DC<-B[4]
     FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    SC<-B[6]
+    TO<-B[3]
+    CA<-B[2]
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -155,16 +157,17 @@ for (l in unique(PDFs_July97)){
   yvals<-yvals[yvals>103&yvals!=464&yvals!=482&yvals!=500&yvals!=582&yvals!=600&yvals!=618&yvals!=636&yvals!=654]
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
-    n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
+    yi<-yi[order(yi$x),]
+    n<-grep('^[-A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
+    B<-yi$text[(length(yi$text)-5):length(yi$text)]
+    PC<-B[5]
+    DC<-B[4]
     FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    SC<-B[6]
+    TO<-B[3]
+    CA<-B[2]
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -198,21 +201,43 @@ for (l in unique(PDFs_July98)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+20)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
+  
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>103&yvals!=491&yvals!=473&yvals!=509&yvals!=627&yvals!=591&yvals!=609&yvals!=645&yvals!=663]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -246,21 +271,43 @@ for (l in unique(PDFs_July99)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+20)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
+  
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>103&yvals!=491&yvals!=473&yvals!=509&yvals!=627&yvals!=591&yvals!=609&yvals!=645&yvals!=663]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>190) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -296,21 +343,43 @@ for (l in unique(PDFs_July01_04)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+20)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
+  
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>103&yvals!=481&yvals!=500&yvals!=518&yvals!=599&yvals!=617&yvals!=636&yvals!=654&yvals!=663]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -345,21 +414,43 @@ for (l in unique(PDFs_July05)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+20)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
+  
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>103&yvals!=500&yvals!=518&yvals!=536&yvals!=617&yvals!=636&yvals!=654&yvals!=672&yvals!=681]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -394,21 +485,42 @@ for (l in unique(PDFs_July08)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+30)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>121&yvals!=650&yvals!=642&yvals!=625&yvals!=599&yvals!=582&yvals!=497&yvals!=514&yvals!=480]
 
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -442,21 +554,43 @@ for (l in unique(PDFs_July09_10)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+30)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
+  
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>121&yvals!=642&yvals!=633&yvals!=616&yvals!=591&yvals!=574&yvals!=505&yvals!=488&yvals!=471]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -490,21 +624,42 @@ for (l in unique(PDFs_July11_12)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+30)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
+  
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>121&yvals!=744&yvals!=565&yvals!=514&yvals!=471&yvals!=437]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -538,21 +693,42 @@ for (l in unique(PDFs_July13)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+30)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
+  
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>121&yvals!=744&yvals!=591&yvals!=539&yvals!=497&yvals!=463]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -586,21 +762,41 @@ for (l in unique(PDFs_July14_18)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="FELON/"]
+  FelonXRange<-c(FelonX-20,FelonX+30)
+  CivilAddictX<-d1$x[d1$text=="CIVIL"]
+  CivilAddictXRange<-c(CivilAddictX-20,CivilAddictX+20)
+  TotalX<-d1$x[d1$text=="TOTAL"]
+  TotalXRange<-c(TotalX-20,TotalX+20)
+  DesignCapX<-d1$x[d1$text=="DESIGN"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="PERCENT"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="STAFFED"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>121&yvals!=744&yvals!=582&yvals!=539&yvals!=497&yvals!=463]
   
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[2:length(n)],collapse=" ")
     abr<-n[1]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[4]
-    DC<-B[3]
-    FO<-B[1]
-    SC<-B[5]
-    TO<-B[2]
-    CA<-B[6]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+    TO<-B$text[B$x>=TotalXRange[1]&B$x<=TotalXRange[2]]
+    #Okay the civil addict column was a little tricky
+    #This line says, if there exists a number within the x range of the civil addict column than store that number in CA
+    #otherwise store 0 in CA
+    CA<-ifelse(any(B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]),B$text[B$x>=CivilAddictXRange[1]&B$x<=CivilAddictXRange[2]],0) #if there is a civil addict # then input that, else put zero
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -621,32 +817,47 @@ for (l in unique(PDFs_July14_18)){
 
 
 PDFs_July19_20<-unlist(lapply(July19_20,function(s) eval(parse(text=s))))
+PercCap<-NULL
+name<-NULL
+abrev<-NULL
+DesCap<-NULL
+FelOth<-NULL
+StafCap<-NULL
+Total<-NULL
+Yindex<-NULL
+Year<-NULL
+
 for (l in unique(PDFs_July19_20)){
   out <- pdftools::pdf_text(l)
   d <- pdftools::pdf_data(l)[2]
   d1<-d[[1]]
+  #################################
+  #these identify the x values that span the column of each variable
+  #the first letter of the column header is usually roughly 20 units into the column
+  #and the column will span 50 units past that first letter
+  FelonX<-d1$x[d1$text=="Felon/"]
+  FelonXRange<-c(FelonX-20,FelonX+30)
+  DesignCapX<-d1$x[d1$text=="Design"]
+  DesignCapXRange<-c(DesignCapX-20,DesignCapX+20)
+  PercentOccX<-d1$x[d1$text=="Percent"]
+  PercentOccXRange<-c(PercentOccX-20,PercentOccX+20)
+  StaffedX<-d1$x[d1$text=="Staffed"]
+  #StaffedXRange<-c(PercentOccX-20,PercentOccX+20)
   yvals<-unique(d1$y)
   yvals<-yvals[yvals>180&yvals!=557&yvals!=738]
-  categories<-subset(d1,d1$y==133)
-  
-  PercCap<-NULL
-  name<-NULL
-  abrev<-NULL
-  DesCap<-NULL
-  FelOth<-NULL
-  StafCap<-NULL
-  Year<-NULL
-  Yindex<-NULL
+
   for (i in unique(yvals)){
     yi<-subset(d1,d1$y==i) 
+    yi<-yi[order(yi$x),]
     n<-grep('^[A-Za-z ()]+$', yi$text, value = TRUE)
     nm<-paste(n[1:(length(n)-1)],collapse=" ")
     abr<-n[length(n)]
-    B<-grep('^[1-9]', yi$text, value = TRUE)
-    PC<-B[3]
-    DC<-B[2]
-    FO<-B[1]
-    SC<-B[4]
+    B<-subset(yi,yi$x>200) #This subsets off the name of the prison, which all occur at x indexes smaller than 218
+    PC<-B$text[B$x>=PercentOccXRange[1]&B$x<=PercentOccXRange[2]] #here 411 is the x index for all Percent Occupied Values
+    DC<-B$text[B$x>=DesignCapXRange[1]&B$x<=DesignCapXRange[2]]
+    FO<-B$text[B$x>=FelonXRange[1]&B$x<=FelonXRange[2]]
+    SC<-B$text[B$x>=StaffedX]
+   
     name<-c(name,nm)
     abrev<-c(abrev,abr)
     PercCap<-c(PercCap,PC)
@@ -670,7 +881,4 @@ detach("package:dplyr", unload = TRUE)
 library(plyr)
 Occupancy<-rbind.fill(Occupancy,Occup19_20)
 write.csv(Occupancy,"Occupany.csv")
-#out <- tabulizer::extract_tables(pdf)
-#webpage <- "https://web.archive.org/web/20071214123130/http://www.cdcr.ca.gov/Visitors/docs/20071015-WEBmapbooklet.pdf"
-#out <- tabulizer::extract_tables(webpage)
-dates <- pdftools::pdf_text(webpage)
+
