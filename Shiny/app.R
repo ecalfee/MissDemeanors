@@ -8,7 +8,7 @@ library(dplyr)
 
 # all code that only needs to be run once goes here
 # load data to map
-MapData<-readRDS("../../data/full_data.RDS")
+MapData<-readRDS("../data/full_data.RDS")
 MapData$Year = as.integer(MapData$Year)
 
 # background plot of CA

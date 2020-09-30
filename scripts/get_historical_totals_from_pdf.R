@@ -67,7 +67,7 @@ text1960 <- tesseract::ocr(image = image1960,
                            engine = tesseract(options = list(tessedit_char_whitelist = "0123456789")))
 
 data1960 <- data.frame(year = 1930:1960,
-           inmate_count = as.integer(stringr::str_split(text1960_small, 
+           inmate_count = as.integer(stringr::str_split(text1960, 
                                                  pattern = "\\n")[[1]][1:31])) %>%
   dplyr::filter(year %in% 1946:1959) # some discrepancies between pdfs from CA Dept. of Corrections; default to numbers from larger table
 data1960$inmate_count[data1960$year == 1951] <- 11939 # manually fix one number not read correctly by image OCD
