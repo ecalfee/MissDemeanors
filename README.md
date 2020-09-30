@@ -27,6 +27,9 @@ We requested reports for July & January. January 1990 was missing from the recor
 
 ## TO FIX
 -San Quentin State Prison (SQ) and California City Correctional Facility (CAC) do have addresses but do not have any occupancy data
--also need to fix issue with column-swapping
+- Rio Cosumnes Correctional Center (RIO), Santa Rita County Jail (SRTA), and Pitchess Detention Center (PDC) are all county jails that are within this database.
+
 
 ## Analysis steps and scripts
+
+
