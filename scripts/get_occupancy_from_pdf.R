@@ -90,6 +90,8 @@ for (l in unique(PDFs_July95)){
   Occup95$name[Occup95$name=="NA FEMALE"]<-"Female Total"
   Occup95$name[Occup95$name=="NA MALE"]<-"Male Total"
 }
+Occup95<-as.data.frame(Occup95)
+
 
 ####1996
 PercCap<-NULL
@@ -141,6 +143,7 @@ for (l in unique(PDFs_July96)){
   Occup96$name[Occup96$name=="NA FEMALE"]<-"Female Total"
   Occup96$name[Occup96$name=="NA MALE"]<-"Male Total"
 }
+Occup96<-as.data.frame(Occup96)
 
 ####1997
 PercCap<-NULL
@@ -191,6 +194,7 @@ for (l in unique(PDFs_July97)){
   Occup97$name[Occup97$name=="NA FEMALE"]<-"Female Total"
   Occup97$name[Occup97$name=="NA MALE"]<-"Male Total"
 }
+Occup97<-as.data.frame(Occup97)
 
 ####1998
 PercCap<-NULL
@@ -263,6 +267,7 @@ for (l in unique(PDFs_July98)){
   Occup98$name[Occup98$name=="NA FEMALE"]<-"Female Total"
   Occup98$name[Occup98$name=="NA MALE"]<-"Male Total"
 }
+Occup98<-as.data.frame(Occup98)
 
 ####1999
 PercCap<-NULL
@@ -335,6 +340,7 @@ for (l in unique(PDFs_July99)){
   Occup99$name[Occup99$name=="NA FEMALE"]<-"Female Total"
   Occup99$name[Occup99$name=="NA MALE"]<-"Male Total"
 }
+Occup99<-as.data.frame(Occup99)
 
 
 
@@ -409,6 +415,7 @@ for (l in unique(PDFs_July01_04)){
   Occup01_04$name[Occup01_04$name=="NA FEMALE"]<-"Female Total"
   Occup01_04$name[Occup01_04$name=="NA MALE"]<-"Male Total"
 }
+Occup01_04<-as.data.frame(Occup01_04)
 
 
 ####2005
@@ -482,6 +489,7 @@ for (l in unique(PDFs_July05)){
   Occup05$name[Occup05$name=="NA FEMALE"]<-"Female Total"
   Occup05$name[Occup05$name=="NA MALE"]<-"Male Total"
 }
+Occup05<-as.data.frame(Occup05)
 
 
 ####2008
@@ -554,6 +562,7 @@ for (l in unique(PDFs_July08)){
   Occup08$name[Occup08$name=="NA FEMALE"]<-"Female Total"
   Occup08$name[Occup08$name=="NA MALE"]<-"Male Total"
 }
+Occup08<-as.data.frame(Occup08)
 
 ######2009-2010
 PercCap<-NULL
@@ -626,6 +635,7 @@ for (l in unique(PDFs_July09_10)){
   Occup910$name[Occup910$name=="NA FEMALE"]<-"Female Total"
   Occup910$name[Occup910$name=="NA MALE"]<-"Male Total"
 }
+Occup910<-as.data.frame(Occup910)
 
 ########2011-2012
 PercCap<-NULL
@@ -697,6 +707,7 @@ for (l in unique(PDFs_July11_12)){
   Occup11_12$name[Occup11_12$name=="NA FEMALE"]<-"Female Total"
   Occup11_12$name[Occup11_12$name=="NA MALE"]<-"Male Total"
 }
+Occup11_12<-as.data.frame(Occup11_12)
 
 ########2013
 PercCap<-NULL
@@ -768,6 +779,7 @@ for (l in unique(PDFs_July13)){
   Occup13$name[Occup13$name=="NA FEMALE"]<-"Female Total"
   Occup13$name[Occup13$name=="NA MALE"]<-"Male Total"
 }
+Occup13<-as.data.frame(Occup13)
 
 ########2014-2018
 PercCap<-NULL
@@ -838,7 +850,7 @@ for (l in unique(PDFs_July14_18)){
   Occup14_18$name[Occup14_18$name=="NA FEMALE"]<-"Female Total"
   Occup14_18$name[Occup14_18$name=="NA MALE"]<-"Male Total"
 }
-
+Occup14_18<-as.data.frame(Occup14_18)
 
 PDFs_July19_20<-unlist(lapply(July19_20,function(s) eval(parse(text=s))))
 PercCap<-NULL
@@ -900,7 +912,7 @@ for (l in unique(PDFs_July19_20)){
   Occup19_20$name[Occup19_20$name=="NA MALE"]<-"Male Total"
   
 }
-
+Occup19_20<-as.data.frame(Occup19_20)
 
 Occupancy<-rbind(Occup95,Occup96,Occup97,Occup98,Occup99,Occup01_04,Occup05,Occup08,Occup910,Occup11_12,Occup13,Occup14_18)
 detach("package:dplyr", unload = TRUE)
