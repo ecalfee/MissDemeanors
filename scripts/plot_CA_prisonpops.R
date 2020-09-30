@@ -31,7 +31,7 @@ ggplot() + geom_polygon(data = ggplot2::map_data("state")  %>% # united states d
   annotate("text", label = paste0("Total Prison Population: ",sum(data %>% filter(Year == set_year) %>% dplyr::select(Inmates), na.rm = T)), x = -117.0, y = 40.0, size = 3, colour = "black") +  #add total prison inmate population text
   geom_text() +
   annotate("text", label = paste0("Total prison occupancy: ", round(mean(as.numeric(unlist(data %>% filter(Year == set_year) %>% dplyr::select(Percent_occupancy))), na.rm = T), digits = 2) ,"%"), x = -117.0, y = 41.0, size = 4, colour = "black") + #add mean occupancy text
-    theme_classic() 
+    theme_void()  #turn back to #theme_classic if you want axes on
 
 }
 
