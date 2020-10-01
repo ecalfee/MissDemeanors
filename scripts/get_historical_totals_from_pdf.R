@@ -9,8 +9,8 @@ require(magick) # pre-process png
 # California Department of Corrections and Rehabilitation
 # (916) 255-0185, Data.Requests@cdcr.ca.gov
 
-# The first state prison opened in 1851 and 2 historical reports
-# contain summaries covering most years between then and the 
+# The first state prison opened in 1851 and 3 historical reports
+# contain summaries covering all years between then and the 
 # more modern yearly reports of inmate totals by facility
 report1851 <- "../data/calprisd/calprisd1851_1945.pdf"
 report2000 <- "../data/calprisd/CalPrisd2000.pdf"
