@@ -6,11 +6,17 @@ plot_map <- function(set_year, state_polygon, data){
 
   #colors_percent <- c("blue3", "yellow", "indianred", "tomato3", "orangered3", "red3", "red2", "red") #create a paletta that's the same length as the binning
   #names(colors_percent) <- levels(data$percent_bin)
+#  jitter <- position_jitter(width = 0.15, height = 0.15, seed = 100)
+  jitter <- position_jitter(width = 0, height = 0, seed = 100)
   
-  jitter <- position_jitter(width = 0.15, height = 0.15, seed = 100)
-  
-  ggplot() + geom_polygon(data = state_polygon, aes(x = long, y = lat, group = group), alpha = 0.25) + #plot of California
-  geom_point(data = data %>% dplyr::filter(Year == set_year), aes(x = long, y = lat, fill = percent_bin, size = Inmates, color = percent_bin), alpha = 0.75, shape = 21, position = jitter) + #add bubbles
+  ggplot() + geom_polygon(data = state_polygon, 
+                          aes(x = long, y = lat, group = group), 
+                          alpha = 0.25) + #plot of California
+  geom_point(data = data %>% dplyr::filter(Year == set_year), 
+             aes(x = long, y = lat, fill = percent_bin, 
+                 size = Inmates, color = percent_bin), 
+             alpha = 0.75, shape = 21, 
+             position = jitter) + #add bubbles
   scale_size_continuous(name = "Prison Size\n(# inmates at capacity)",
                     breaks = c(1000, 3000, 5000),
                     limits = c(0, 6000),
