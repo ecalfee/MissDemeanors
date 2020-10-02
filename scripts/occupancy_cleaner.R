@@ -27,7 +27,7 @@ occupancy <- read_csv("../data/Occupancy.csv") %>%
   #mutate(Year = str_extract(Year,"[:digit:]{4}")) %>% #get year from filename
   mutate(name = case_when((abbrev == "VSP" & Year < 2013) ~ "VALLEY SP WOMEN",
                           TRUE ~ as.character(.$name))) %>% #this prison changed from being a women's prison to a men's facility in 2013 -- just updating the facility name here to that my prison Sex IDer later will note it correctly
-  rename(Facility = name, Inmates = `FelOth`, Percent_occupancy = PercCap, Design_capacity = DesCap, Staff_capacity = StafCap, Civil_additions = CivAdd) %>%
+  rename(Facility = name, Inmates = `FelOth`, Percent_occupancy = PercCap, Design_capacity = DesCap, Staff_capacity = StaffCap, Civil_additions = CivAdd) %>%
   group_by(Year, abbrev) %>%
   dplyr::mutate(Sex = case_when((str_detect(Facility, "WOMEN") | str_detect(Facility, "FEMALE") | str_detect(Facility, "Women") | str_detect(Facility, "Female")| str_detect(abbrev, "WF") | (n() == 2 ) & (rank(Yindex) == 2)) ~ "women",
                                 TRUE ~ "men")) %>%
