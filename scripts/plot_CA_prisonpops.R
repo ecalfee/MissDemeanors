@@ -1,6 +1,7 @@
 # plotting the map with points on it
 require(dplyr)
 require(ggplot2)
+require(maps)
 require(here) # paths relative to project directory "MissDemeanors/"
 
 plot_map <- function(set_year, state_polygon, data){

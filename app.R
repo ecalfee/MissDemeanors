@@ -4,8 +4,9 @@
 # the 'Run App' button above. See http://shiny.rstudio.com/
 require(shiny)
 require(ggplot2)
+require(maps)
 require(dplyr)
-require(here) # paths relative to project directory "MissDemeanors/"
+require(here) # paths relative to project directory "MissDemeanors/Shiny"
 
 # all code that only needs to be run once goes here
 source(here("scripts/plot_CA_prisonpops.R"))

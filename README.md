@@ -1,5 +1,11 @@
-# MissDemeanors
+# Team MissDemeanors
+# California Proposition 20: Criminal Sentencing, Parole, and DNA Collection Initiative (2020)
+## Questions: 
+- What is the historical context for Prop. 20? Does California currently have relatively fewer/shorter sentences or more/longer senetences?
+- How much room does the California prison system have for an increase in inmates?
 
+## View the Rshiny App!
+https://ecalfee.shinyapps.io/missdemeanors/
 
 ## Data Sources
 # Prison Addresses
