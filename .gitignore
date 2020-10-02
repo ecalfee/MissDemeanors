@@ -3,3 +3,4 @@ data/.DS_Store
 # tmp files created during OCR image processing
 scripts/calprisd*.png
 *.Rhistory
+.Rproj.user

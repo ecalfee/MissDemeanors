@@ -3,6 +3,8 @@ require(pdftools) # newer pdfs, extract text
 require(stringr)
 require(tesseract) # older pdfs, analyze image for text
 require(magick) # pre-process png
+require(here) # package to find paths relative to project home: MissDemeanors/
+
 # this script extracts historical data on CA total prison population
 # from 'calprisd' pdfs obtained from Data Concierge Service-Office of Research
 # Division of Correctional Policy Research and Internal Oversight
@@ -12,9 +14,9 @@ require(magick) # pre-process png
 # The first state prison opened in 1851 and 3 historical reports
 # contain summaries covering all years between then and the 
 # more modern yearly reports of inmate totals by facility
-report1851 <- "../data/calprisd/calprisd1851_1945.pdf"
-report2000 <- "../data/calprisd/CalPrisd2000.pdf"
-png1960 <- "../data/calprisd/calprisd1960_Tbl1_pg18_total_prison_pop.png"
+report1851 <- here("data/calprisd/calprisd1851_1945.pdf")
+report2000 <- here("data/calprisd/CalPrisd2000.pdf")
+png1960 <- here("data/calprisd/calprisd1960_Tbl1_pg18_total_prison_pop.png")
 
 # from the 2000 report we want Table 6 on page 30
 # which gives total institutional population from 1960-2000
@@ -75,5 +77,5 @@ data1960$inmate_count[data1960$year == 1951] <- 11939 # manually fix one number 
 
 # write combined output file
 rbind(data1851, data1960, data2000) %>%
-  write.table(., file = "../data/total_inmate_pop_by_year.txt", sep = "\t",
+  write.table(., file = here("data/total_inmate_pop_by_year.txt"), sep = "\t",
               col.names = T, row.names = F, quote = F)

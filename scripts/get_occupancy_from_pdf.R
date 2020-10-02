@@ -2,11 +2,11 @@ library(dplyr)
 library(tidyr)
 library(pdftools)
 library(stringr)
-# set working directory to current directory "MissDemeanors/scripts/
+require(here) # paths relative to project directory "MissDemeanors/"
 
 # function to read in pdf table from prison population files
 read_pdf_table <- function(yr){
-  pdf = paste0("../data/CA_prison_pop_reports/July_", yr, ".pdf")
+  pdf = here(paste0("data/CA_prison_pop_reports/July_", yr, ".pdf"))
   d <- pdftools::pdf_data(pdf)[2][[1]] # extract table 1 on page 2 of pdf
   # test
   df <- d %>% # try to turn value into a number
@@ -76,7 +76,7 @@ Total<-NULL
 Yindex<-NULL
 Year<-NULL
 for (l in c(2019,2020)){
-  pdf = paste0("../data/CA_prison_pop_reports/July_",l,".pdf")
+  pdf = here(paste0("data/CA_prison_pop_reports/July_",l,".pdf"))
   d <- pdftools::pdf_data(pdf)[2][[1]]
   #these identify the x values that span the column of each variable
   #the first letter of the column header is usually roughly 20 units into the column
@@ -131,4 +131,4 @@ data_2019_2020 <- as.data.frame(Occup19_20) %>%
                 DesCap = as.numeric(stringr::str_replace_all(DesCap, ",", "")),
                 abrev = stringr::str_extract(abrev, "[A-Z]+"))
 data_all_yrs <- bind_rows(data_1995_2018, data_2019_2020) 
-write.csv(data_all_yrs, "Occupancy.csv")
+write.csv(data_all_yrs, here("data/Occupancy.csv"))

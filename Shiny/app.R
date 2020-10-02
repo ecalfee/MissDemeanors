@@ -2,14 +2,15 @@
 
 # This is a Shiny web application. You can run the application by clicking
 # the 'Run App' button above. See http://shiny.rstudio.com/
-library(shiny)
-library(ggplot2)
-library(dplyr)
+require(shiny)
+require(ggplot2)
+require(dplyr)
+require(here) # paths relative to project directory "MissDemeanors/"
 
 # all code that only needs to be run once goes here
-source("../scripts/plot_CA_prisonpops.R")
+source(here("scripts/plot_CA_prisonpops.R"))
 # load data to map
-map_data <- readRDS("../data/full_data.RDS") %>%
+map_data <- readRDS(here("data/full_data.RDS")) %>%
   mutate(Year = as.integer(Year))
 CA_polygon = ggplot2::map_data("state")  %>% # united states data
   filter(., region == "california") 

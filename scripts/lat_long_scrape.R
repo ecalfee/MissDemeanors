@@ -1,14 +1,13 @@
-#Get lat/long data from addresses
-#Katherine Corn and Erin Calfee
-#25 September 2020
+# Get lat/long data from addresses to plot prison locations
 require(rvest)
 require(tidyr)
 require(dplyr)
 require(stringr)
 require(xml2)
 require(tidygeocoder) #geocode
+require(here) # paths relative to project directory "MissDemeanors/"
 
-
+# scrape prison addresses from CA Dept. of Corrections and Rehabilitation Website
 webpage <- xml2::read_html("https://www.cdcr.ca.gov/facility-locator/adult-institutions")
 
 tablescrape <- webpage %>%
@@ -52,7 +51,9 @@ lat_long <- full_address_list %>%
   dplyr::mutate(long = dplyr::coalesce(long_specific,long)) %>% 
   dplyr::select(everything(), -Zip, - lat_specific, -long_specific, - geo_method)
 
-#A couple of fixes
+# A couple of fixes after a visual check:
+# these lat/lon coordinates from geocode were clearly wrong
+# and we looked them up by hand on google maps
 lat_long[lat_long$abbrev=="CCC", "lat"] <- 40.397402
 lat_long[lat_long$abbrev=="CCC", "long"] <- -120.511749
 lat_long[lat_long$abbrev=="CCI", "lat"] <- 35.113301
@@ -64,4 +65,4 @@ lat_long[lat_long$abbrev=="HDSP", "long"] <- -120.526065
 lat_long[lat_long$abbrev=="MCSP", "lat"] <- 38.370631
 lat_long[lat_long$abbrev=="MCSP", "long"] <- -120.953728
 
-saveRDS(lat_long, "../data/prisons_lat_long_values.RDS")
+saveRDS(lat_long, here("data/prisons_lat_long_values.RDS"))
