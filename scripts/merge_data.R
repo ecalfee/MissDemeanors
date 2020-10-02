@@ -7,7 +7,7 @@ occupancy <- readRDS(here("data/occupancy_cleaned.RDS"))
 lat_long <- readRDS(here("data/prisons_lat_long_values.RDS"))
 
 #add occupancy data and lat/long data
-full_data <- full_join(lat_long, occupancy, by = "abbrev")
+full_data <- full_join(occupancy, lat_long, by = "abbrev")
 
 #check to make sure it worked
 full_data

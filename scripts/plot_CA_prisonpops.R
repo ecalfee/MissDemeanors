@@ -5,18 +5,17 @@ require(maps)
 require(here) # paths relative to project directory "MissDemeanors/"
 
 plot_map <- function(set_year, state_polygon, data){
-
-  #colors_percent <- c("blue3", "yellow", "indianred", "tomato3", "orangered3", "red3", "red2", "red") #create a paletta that's the same length as the binning
-  #names(colors_percent) <- levels(data$percent_bin)
-#  jitter <- position_jitter(width = 0.15, height = 0.15, seed = 100)
+  # filter to current year
+  data_yr <- data %>% dplyr::filter(Year == set_year)
+  #  jitter <- position_jitter(width = 0.15, height = 0.15, seed = 100)
   jitter <- position_jitter(width = 0, height = 0, seed = 100)
   
   ggplot() + geom_polygon(data = state_polygon, 
                           aes(x = long, y = lat, group = group), 
                           alpha = 0.25) + #plot of California
-  geom_point(data = data %>% dplyr::filter(Year == set_year), 
+  geom_point(data = data_yr, 
              aes(x = long, y = lat, fill = percent_bin, 
-                 size = Inmates, color = percent_bin), 
+                 size = Design_capacity, color = percent_bin), 
              alpha = 0.75, shape = 21, 
              position = jitter) + #add bubbles
   scale_size_continuous(name = "Prison Size\n(# inmates at capacity)",
@@ -31,16 +30,27 @@ plot_map <- function(set_year, state_polygon, data){
          size = guide_legend(order=2),
          color = FALSE) + #make sure that legends are in a consistent order
   geom_text() +
-  annotate("text", label = paste("Year:", set_year), x = -117.0, y = 42.0, size = 4, colour = "black") + #add year label
+  annotate("text", label = paste("Year:", set_year), 
+           x = -117.0, y = 42.0, 
+           size = 4, colour = "black") + #add year label
   geom_text() +
-  annotate("text", label = paste0("Total Prison Population: ", sum(data %>% filter(Year == set_year) %>% dplyr::select(Inmates), na.rm = T)), x = -117.0, y = 40.0, size = 3, colour = "black") +  #add total prison inmate population text
+  annotate("text", label = paste0("Total Prison Population: ", 
+                                  sum(data_yr %>% 
+                                        dplyr::select(Inmates), na.rm = T)), 
+           x = -117.0, y = 40.0, 
+           size = 3, colour = "black") +  #add total prison inmate population text
   geom_text() +
-  annotate("text", label = paste0("Total prison occupancy: ", round(mean(as.numeric(unlist(data %>% filter(Year == set_year) %>% dplyr::select(Percent_occupancy))), na.rm = T), digits = 2) ,"%"), x = -117.0, y = 41.0, size = 4, colour = "black") + #add mean occupancy text
+  annotate("text", label = paste0("Total Prison Occupancy: ", 
+                                  data_yr %>% # % space occupied is (total inmates + civil additions)/(total design capacity)
+                                   dplyr::summarise(tot = 100*sum(Total)/sum(Design_capacity)) %>% 
+                                   round(., digits = 1) %>%
+                                   unlist(.), "%"), 
+    x = -117.0, y = 41.0, size = 4, colour = "black") + #add mean occupancy text
     theme_void()  #turn back to #theme_classic if you want axes on
 }
 
 # test by plotting 1 year (2020)
-#full_data <- readRDS(here("data/full_data.RDS"))
-#CA_polygon = ggplot2::map_data("state")  %>% # united states data
-#  filter(., region == "california") 
-#plot_map(set_year = 2020, state_polygon = CA_polygon, data = full_data)
+# full_data <- readRDS(here("data/full_data.RDS"))
+# CA_polygon = ggplot2::map_data("state")  %>% # united states data
+#   filter(., region == "california") 
+# plot_map(set_year = 2020, state_polygon = CA_polygon, data = full_data)

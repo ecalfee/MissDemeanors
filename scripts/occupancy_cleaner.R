@@ -18,7 +18,7 @@ occupancy <- read_csv(here("data/Occupancy.csv")) %>%
                             abbrev == "IRON" ~ "ISP",
                             TRUE ~ as.character(.$abbrev))) %>%
   dplyr::filter(complete.cases(abbrev)) %>% 
-  filter(., !abbrev %in% c("Total", "Female", "Male", "Total", "NA","FEMALE","MALE","TOTAL")) %>% #take out rows that are sums by group
+  filter(., !abbrev %in% c("INSTITUTIONS", "Total", "Female", "Male", "Total", "NA","FEMALE","MALE","TOTAL")) %>% #take out rows that are sums by group
   mutate(DesCap = as.numeric(case_when(abbrev == "SRTA" ~ "395",
                              abbrev == "PDC" ~ "NA", #no data on this design capacity--replacing the 0 with NA so we can work with it as no info
                              abbrev == "RIO" ~ "NA",
@@ -40,7 +40,15 @@ occupancy <- read_csv(here("data/Occupancy.csv")) %>%
                         TRUE ~ "state_prison"))  %>% # label mens and womens facilities
   # create bins for ranges of percent occupied that should have different colors on the map
   mutate(percent_bin = cut(Percent_occupancy, 
-                           breaks = c(0, 90, 100, 125, 150, 200, 250, 300))) # makes a discrete grouping of values to assign colors for plotting
+                           breaks = c(0, 90, 100, 125, 150, 200, 250, 300))) %>% # makes a discrete grouping of values to assign colors for plotting
+  # filter out row for 1 woman in San Quentin's 'women's facility' in 2020
+  # b/c San Quentin is incorrectly listed as a men's and women's institution this year
+  # with the full capacity of the prison for both
+  dplyr::filter(., !(abbrev == "SQ" & Sex == "women" & Inmates == 1)) %>%
+  dplyr::filter(., Prison_or_Jail_in_2020 != "county_jail") %>% # only map prisons. jails we can't estimate capacity because we don't know #s for other non-felon inmates.
+  # NAs for civil additions are zeros. And Total = Inmate Felony/Other + Civil additions
+  mutate(Civil_additions = ifelse(is.na(Civil_additions), 0, Civil_additions),
+         Total = ifelse(is.na(Total), Inmates + Civil_additions, Total))
 
 
 saveRDS(occupancy, here("data/occupancy_cleaned.RDS"))
