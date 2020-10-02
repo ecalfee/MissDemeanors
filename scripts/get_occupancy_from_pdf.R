@@ -71,7 +71,7 @@ name<-NULL
 abrev<-NULL
 DesCap<-NULL
 FelOth<-NULL
-StafCap<-NULL
+StaffCap<-NULL
 Total<-NULL
 Yindex<-NULL
 Year<-NULL
@@ -109,11 +109,11 @@ for (l in c(2019,2020)){
     PercCap<-c(PercCap,PC)
     DesCap<-c(DesCap,DC)
     FelOth<-c(FelOth,FO)
-    StafCap<-c(StafCap,SC)
+    StaffCap<-c(StaffCap,SC)
     Yindex<-c(Yindex,yi$y[1])
     Year<-c(Year,l)
   }
-  Occup19_20<-cbind(name,abrev,PercCap,DesCap,FelOth,StafCap,Yindex,Year)
+  Occup19_20<-cbind(name,abrev,PercCap,DesCap,FelOth,StaffCap,Yindex,Year)
   Occup19_20<-as.data.frame(Occup19_20)
   Occup19_20$abrev[Occup19_20$name=="Institution"]<-"INSTITUTIONS/CAMPS"
   Occup19_20$abrev[Occup19_20$name=="Female"]<-"FEMALE"
@@ -125,10 +125,10 @@ for (l in c(2019,2020)){
 data_2019_2020 <- as.data.frame(Occup19_20) %>%
   dplyr::mutate(Year = as.numeric(Year),
                 Yindex = as.numeric(Yindex),
-                StafCap = as.numeric(stringr::str_replace_all(StafCap, ",", "")),
+                StaffCap = as.numeric(stringr::str_replace_all(StaffCap, ",", "")),
                 FelOth = as.numeric(stringr::str_replace_all(FelOth, ",", "")),
                 PercCap = as.numeric(stringr::str_replace_all(PercCap, ",", "")),
                 DesCap = as.numeric(stringr::str_replace_all(DesCap, ",", "")),
                 abrev = stringr::str_extract(abrev, "[A-Z]+"))
-data_all_yrs <- bind_rows(data_1995_2017, data_2019_2020) 
+data_all_yrs <- bind_rows(data_1995_2018, data_2019_2020) 
 write.csv(data_all_yrs, "Occupancy.csv")
