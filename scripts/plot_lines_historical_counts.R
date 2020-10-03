@@ -23,21 +23,27 @@ events <- read.table("data/historical_CA_events.csv",
 
 
 # plot
-ggplot(prison_pop, aes(x = year, y = inmate_count)) +
-  geom_line() +
-  theme_light() +
-  ylab("Total inmates in CA prisons")
-ggplot(prison_pop, aes(x = year, y = pop_estimate/10^6)) +
-  geom_line() +
-  theme_light() +
-  ylab("Total CA residents (millions)")
+# ggplot(prison_pop, aes(x = year, y = inmate_count)) +
+#   geom_line() +
+#   theme_light() +
+#   ylab("Total inmates in CA prisons")
+# ggplot(prison_pop, aes(x = year, y = pop_estimate/10^6)) +
+#   geom_line() +
+#   theme_light() +
+#   ylab("Total CA residents (millions)")
 
-ggplot(prison_pop, aes(x = year, y = inmate_per_100k)) +
+plot_lines <- function(d = prison_pop, e = events, set_year){
+  ggplot(d, aes(x = year, y = inmate_per_100k)) +
   geom_line() +
   theme_classic() +
-  ylab("Inmates per 100,000 CA residents") +
-  geom_vline(data = filter(events, 
-                           name %in% c("AB 109", "Prop 47", "Prop 57", "COVID-19")),
+  ylab("Inmates per 100,000 residents") +
+    # add lines for major legislation and other events affecting inmate populations
+  geom_vline(data = e, #filter(e, 
+                     #name %in% c("AB 109", "Prop 47", "Prop 57")),
              aes(color = effect,
-                 xintercept = year))
-  
+                 xintercept = year)) +
+    # add a point for current year
+  geom_point(data = filter(d, year == set_year),
+             pch = 1)
+}
+#plot_lines(set_year = 2020)  

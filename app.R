@@ -6,15 +6,43 @@ require(shiny)
 require(ggplot2)
 require(maps)
 require(dplyr)
+library(gridExtra) # for combining multiple plots together
+library(cowplot) # for extracting legend from plots
 require(here) # paths relative to project directory "MissDemeanors/Shiny"
 
 # all code that only needs to be run once goes here
 source(here("scripts/plot_CA_prisonpops.R"))
+source(here("scripts/plot_lines_historical_counts.R"))
 # load data to map
 map_data <- readRDS(here("data/full_data.RDS")) %>%
   mutate(Year = as.integer(Year))
 CA_polygon = ggplot2::map_data("state")  %>% # united states data
   filter(., region == "california") 
+
+# function to combine plots
+combine_plots <- function(set_year){
+  # make map
+  map_prisons <- plot_map(set_year = set_year, state_polygon = CA_polygon, data = map_data)
+  # make line plot
+  line_plot <- plot_lines(set_year = set_year)
+  # put plots together
+  # plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons + theme(legend.position = "none")),
+  #                                                       cowplot::get_legend(map_prisons),
+  #                                                       ggplotGrob(line_plot)),
+  #                                          layout_matrix = rbind(c(1,2),
+  #                                                                c(3, 3)),
+  #                                          heights = c(4, 1),
+  #                                          widths = c(4, 1))
+  plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons), 
+                                                        ggplotGrob(line_plot)),
+                                           # arrange plot 1 in row 1 and plot 2 in row 2 (only 1 column here)
+                                           layout_matrix = rbind(c(1), c(2)),
+                                           # set relative heights and widths of plots in the layout matrix
+                                           heights = c(5, 3),
+                                           widths = c(1))
+  return(plots_together)
+}
+#combine_plots(2015)
 
 # ui controls the inputs and outputs and
 # layout of our shiny webpage
@@ -40,7 +68,9 @@ ui <- fluidPage(
 
 # server renders the plot
 server <- function(input, output) {
-  output$myMap <- renderPlot(plot_map(set_year = input$Year, state_polygon = CA_polygon, data = map_data))
+  output$myMap <- renderPlot(combine_plots(set_year = input$Year),
+                             # fixing height and width of plot
+                             width = 600, height = 600)
 }
 
 # shinyApp runs the app!
