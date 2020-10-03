@@ -11,14 +11,11 @@ https://ecalfee.shinyapps.io/missdemeanors/
 ### Prison Addresses
 - California Department of Corrections and Rehabilitation website https://www.cdcr.ca.gov/facility-locator/adult-institutions
 
-california-population-1850-2019.csv
 ### Total California Population Data
 - 2020 California Population Estimate Dept. of Finance 
 http://www.dof.ca.gov/Forecasting/Demographics/Estimates/e-1/documents/E-1_2020_InternetVersion.xlsx
 - 1900-2019 California Populaiton Estimates Dept. of Finance
 http://www.dof.ca.gov/Forecasting/Demographics/Estimates/E-7/documents/E-7_Report_1900-July_2019w.xlsx
-- California Population 1900-2019 compiled from US Census Bureau Population Estimates https://www.macrotrends.net/states/california/population
-<a href='https://www.macrotrends.net/states/california/population'>California Population 1900-2019</a>
 - California Population 1850, 1860, 1870, 1880 and 1900 from US Census
 https://www.census.gov/history/pdf/california_res_pop-jan2018.pdf
 (saved as data/CA_census_1850-1900.csv)

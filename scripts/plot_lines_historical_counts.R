@@ -40,10 +40,36 @@ plot_lines <- function(d = prison_pop, e = events, set_year){
     # add lines for major legislation and other events affecting inmate populations
   geom_vline(data = e, #filter(e, 
                      #name %in% c("AB 109", "Prop 47", "Prop 57")),
-             aes(color = effect,
+             aes(color = effect, # different color for events that increase vs. decrease prison pops
                  xintercept = year)) +
+  guides(color = F) +
     # add a point for current year
   geom_point(data = filter(d, year == set_year),
-             pch = 1)
+             pch = 20, size = 3) +
+  # match map colors -- purples are events that lead to higher # prison inmates
+    # and oranges are events that lead to lower # prison inmates
+  scale_color_viridis_d(option = "inferno",
+            begin = 0.8, end = 0.2)
 }
-#plot_lines(set_year = 2020)  
+#plot_lines(set_year = 2020) 
+
+# write out the names of all the legislation
+plot_events <- function(e = events, set_year){
+  e %>%
+    mutate(index= nrow(.):1,
+           text = paste(year, name, short_name)) %>%
+    ggplot(., aes(x = 1, y = index, 
+                  color = effect,
+                  label = text,
+                  fill = (year == set_year)), # highlight if legislation is current year
+           x = 1,# all in same column
+           size = 0.1) +
+    geom_label() +
+    theme_void() +
+    scale_color_viridis_d(option = "inferno",
+                          begin = 0.8, end = 0.2) +
+    scale_fill_manual(values = c("white", alpha("black", 0.25))) + # highlight same color as map background
+    guides(color = F,
+           fill = F)
+}
+#plot_events(set_year = 2020)  

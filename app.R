@@ -25,6 +25,8 @@ combine_plots <- function(set_year){
   map_prisons <- plot_map(set_year = set_year, state_polygon = CA_polygon, data = map_data)
   # make line plot
   line_plot <- plot_lines(set_year = set_year)
+  # get events/legislation names
+  events_text <- plot_events(set_year = set_year)
   # put plots together
   # plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons + theme(legend.position = "none")),
   #                                                       cowplot::get_legend(map_prisons),
@@ -33,16 +35,25 @@ combine_plots <- function(set_year){
   #                                                                c(3, 3)),
   #                                          heights = c(4, 1),
   #                                          widths = c(4, 1))
+  # plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons), 
+  #                                                       ggplotGrob(line_plot)),
+  #                                          # arrange plot 1 in row 1 and plot 2 in row 2 (only 1 column here)
+  #                                          layout_matrix = rbind(c(1), c(2)),
+  #                                          # set relative heights and widths of plots in the layout matrix
+  #                                          heights = c(5, 3),
+  #                                          widths = c(1))
   plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons), 
-                                                        ggplotGrob(line_plot)),
+                                                        ggplotGrob(line_plot),
+                                                        ggplotGrob(events_text)),
                                            # arrange plot 1 in row 1 and plot 2 in row 2 (only 1 column here)
-                                           layout_matrix = rbind(c(1), c(2)),
+                                           layout_matrix = rbind(c(1,3), c(2,3)),
                                            # set relative heights and widths of plots in the layout matrix
-                                           heights = c(5, 3),
-                                           widths = c(1))
+                                           heights = c(4, 3),
+                                           widths = c(2, 1))
+  
   return(plots_together)
 }
-#combine_plots(2015)
+#combine_plots(2016)
 
 # ui controls the inputs and outputs and
 # layout of our shiny webpage
@@ -55,9 +66,11 @@ ui <- fluidPage(
         sidebarPanel( # slider input from user
           sliderInput(inputId = "Year", 
                       label = "Change Year", 
-                      min = 1995, max = 2020, 
-                      value= 1995, # default (where slider starts)
-                      animate = T, # add a 'play' button for animating through years
+                      min = 1995, 
+                      max = 2020, 
+                      value = 1995, # default (where slider starts)
+                      # add a 'play' button for animating through years
+                      animate = animationOptions(interval = 3000), # default is 1000, here we slow down animations
                       sep = "" # no comma in dates at thousands spot
                       )), 
         mainPanel( # main panel = plot
@@ -70,7 +83,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$myMap <- renderPlot(combine_plots(set_year = input$Year),
                              # fixing height and width of plot
-                             width = 600, height = 600)
+                             width = 750, height = 600)
 }
 
 # shinyApp runs the app!
