@@ -6,7 +6,7 @@ require(magick) # pre-process png
 require(here) # package to find paths relative to project home: MissDemeanors/
 
 # this script extracts historical data on CA total prison population
-# from 'calprisd' pdfs obtained from Data Concierge Service-Office of Research
+# from 'Calprisd' and 'Offender Data Points' pdfs obtained from Data Concierge Service-Office of Research
 # Division of Correctional Policy Research and Internal Oversight
 # California Department of Corrections and Rehabilitation
 # (916) 255-0185, Data.Requests@cdcr.ca.gov
@@ -74,8 +74,45 @@ data1960 <- data.frame(year = 1930:1960,
   dplyr::filter(year %in% 1946:1959) # some discrepancies between pdfs from CA Dept. of Corrections; default to numbers from larger table
 data1960$inmate_count[data1960$year == 1951] <- 11939 # manually fix one number not read correctly by image OCD
 
+# from the modern reports, we want the # of inmates per prison, 
+# plus inmates held out of state or in private prisons, community facilities, camps, or jail
+# but does not include those on parole
+# This is called varyingly 'A. TOTAL INSTITUTIONS' or
+# 'A. TOTAL IN-CUSTODY/CRPP SU' on page 1 of the reports
+extract_total_in_custody <- function(yr){
+  pdf = here(paste0("data/CA_prison_pop_reports/July_", yr, ".pdf"))
+  d <- pdftools::pdf_data(pdf)[1][[1]] %>% # extract table 1 on page 1 of pdf
+      dplyr::arrange(y, x)
+  # find the first row starting with 'A.' will always give the total in-custody population counts
+  total_y = d$y[which(d$text == "A.")[1]] # find y value for this row
+  # find the maximum number in this row (= total pop)
+  total = dplyr::filter(d, y == total_y) %>%
+    dplyr::mutate(number = stringr::str_replace_all(text, ",", "") %>%
+                    as.numeric(.)) %>%
+    dplyr::summarise(inmate_count = max(number, na.rm = T)) %>%
+    dplyr::mutate(year = yr,
+                  # save also the full line to double-check 
+                  line = paste(d$text[d$y == total_y], collapse = " "))
+  return(total)
+}
+# extract data from population report pdfs for 1990-2020
+yrs = 1990:2020 # pdf tables are readable for these years
+data2020 <- do.call(bind_rows, lapply(yrs, function(i) extract_total_in_custody(yr = i)))
+#View(data2020) # visual check
+#we have overlap between datasets for 1990-2000
+#and numbers can differ between these two official sources 
+#by up to ~3500 inmates but neither source is consistently lower
+#and so we believe this is more likely a difference in the timing of counts
+#vs. a systematic error
+#inner_join(data2020, data2000, by = "year") %>%
+#  mutate(diff = inmate_count.x - inmate_count.y) %>%
+#  View(.)
+
+# so for the years that overlap, we average the 2 available values:
+data_all_yrs <- bind_rows(data1851, data1960, data2000, data2020) %>%
+  dplyr::group_by(year) %>%
+  dplyr::summarise(inmate_count = mean(inmate_count))
 
 # write combined output file
-rbind(data1851, data1960, data2000) %>%
-  write.table(., file = here("data/total_inmate_pop_by_year.txt"), sep = "\t",
+write.table(data_all_yrs, file = here("data/total_inmate_pop_by_year.txt"), sep = "\t",
               col.names = T, row.names = F, quote = F)

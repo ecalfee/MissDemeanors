@@ -11,8 +11,7 @@ read_pdf_table <- function(yr){
   # test
   df <- d %>% # try to turn value into a number
     dplyr::mutate(number = as.numeric(stringr::str_replace_all(text, ",", "") %>%
-                                        stringr::str_replace_all(., "-", "0") %>%
-                                        as.numeric(.))) # get rid of commas and change any single dashes - to zeros
+                                        stringr::str_replace_all(., "-", "0"))) # get rid of commas and change any single dashes - to zeros
   # which rows have numbers?
   rows_with_numbers <- unique(df$y[!is.na(df$number)])
   # how many columns of numbers does each row have?
@@ -114,7 +113,7 @@ for (l in c(2019,2020)){
     Year<-c(Year,l)
   }
   Occup19_20<-cbind(name,abrev,PercCap,DesCap,FelOth,StaffCap,Yindex,Year)
-  Occup19_20<-as.data.frame(Occup19_20)
+  Occup19_20<-as.data.frame(Occup19_20, stringsAsFactors = F)
   Occup19_20$abrev[Occup19_20$name=="Institution"]<-"INSTITUTIONS/CAMPS"
   Occup19_20$abrev[Occup19_20$name=="Female"]<-"FEMALE"
   Occup19_20$name[Occup19_20$name=="Female"]<-"Female Total"
