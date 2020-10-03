@@ -45,7 +45,9 @@ plot_map <- function(set_year, state_polygon, data){
                                    dplyr::summarise(tot = 100*sum(Total)/sum(Design_capacity)) %>% 
                                    round(., digits = 1) %>%
                                    unlist(.), "%"), 
-    x = -117.0, y = 41.0, size = 4, colour = "black") + #add mean occupancy text
+    x = -117.0, y = 41.0, size = 4, 
+    # text is red if over 137.5% court limit set in Brown v. Plata 2011, black otherwise
+    colour = ifelse(100*sum(data_yr$Total)/sum(data_yr$Design_capacity) >= 137.5, "red", "black")) + #add mean occupancy text
     theme_void()  #turn back to #theme_classic if you want axes on
 }
 
@@ -53,4 +55,4 @@ plot_map <- function(set_year, state_polygon, data){
 # full_data <- readRDS(here("data/full_data.RDS"))
 # CA_polygon = ggplot2::map_data("state")  %>% # united states data
 #   filter(., region == "california") 
-# plot_map(set_year = 2020, state_polygon = CA_polygon, data = full_data)
+# plot_map(set_year = 2006, state_polygon = CA_polygon, data = full_data)
