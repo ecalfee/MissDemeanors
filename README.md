@@ -52,10 +52,11 @@ https://www.cdcr.ca.gov/research/wp-content/uploads/sites/174/2020/01/201812_Dat
 - No address for Female Rehabilitative Community Correctional Center (FRCC) in Bakersfield so random Bakersfield zip code chosen
 
 
-### Manual geocoding of prisons that produced erroroneous latitudes & longitudes when geocoding with tidygeocoder: (prisons: California Correctional Institution, California Correctional Center, High Desert State Prison, California Men’s Colony, Mule Creek State Prison)
+### Manual geocoding 
+A few facilities produced errors latitudes & longitudes when geocoding with tidygeocoder (prisons: California Correctional Institution, California Correctional Center, High Desert State Prison, California Men’s Colony, Mule Creek State Prison)
 https://developers.google.com/maps/documentation/geocoding/overview
 
-# Three county jail facilities were missing design capacity data. One, Santa Rita Jail, had total capacity in one year, but not in others. We copied capacity for that year into all years for that institution. The other two institutions (Pitchess Detention Center and Rio Cosumnes Correctional Center), we filled the "design capacity" column with "NA".
+Three county jail facilities were missing design capacity data. One, Santa Rita Jail, had total capacity in one year, but not in others. We copied capacity for that year into all years for that institution. The other two institutions (Pitchess Detention Center and Rio Cosumnes Correctional Center), we filled the "design capacity" column with "NA".
 
 
 ## Analysis steps and scripts
