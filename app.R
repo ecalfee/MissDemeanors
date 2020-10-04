@@ -53,38 +53,36 @@ combine_plots <- function(set_year){
   
   return(plots_together)
 }
-#combine_plots(2016)
 
-# ui controls the inputs and outputs and
-# layout of our shiny webpage
+
 ui <- fluidPage(
-      # title
-      titlePanel("California Prison Population Through Time"),
-      # add side-by-side main plot and sliding bar
-      sidebarLayout(
-        position = "right",
-        sidebarPanel( # slider input from user
-          sliderInput(inputId = "Year", 
-                      label = "Change Year", 
-                      min = 1995, 
-                      max = 2020, 
-                      value = 1995, # default (where slider starts)
-                      # add a 'play' button for animating through years
-                      animate = animationOptions(interval = 3000), # default is 1000, here we slow down animations
-                      sep = "" # no comma in dates at thousands spot
-                      )), 
-        mainPanel( # main panel = plot
-          plotOutput("myMap"))
-        )
-    )
+  # title
+  titlePanel("California Prison Population Through Time"), #places the title
+  plotOutput("myMap"), #places the main map plot
+  hr(),hr(),hr(),hr(),hr(),hr(), #adds space so that the slider will be under the plot
+ fluidRow( #creates slider
+   column(6, offset = 0.5,
+          wellPanel(sliderInput(inputId = "Year", 
+                        label = "Change Year", 
+                        min = 1995, 
+                        max = 2020, 
+                        value = 1995, # default (where slider starts)
+                        # add a 'play' button for animating through years
+                        animate = animationOptions(interval = 3000), # default is 1000, here we slow down animations
+                        sep = "" # no comma in dates at thousands spot
+   ))), 
+ )
+)
 
 
 # server renders the plot
 server <- function(input, output) {
   output$myMap <- renderPlot(combine_plots(set_year = input$Year),
                              # fixing height and width of plot
-                             width = 750, height = 600)
+                             width = 700, height = 550)
 }
+
+
 
 # shinyApp runs the app!
 shinyApp(ui = ui, server = server)

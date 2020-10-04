@@ -48,8 +48,7 @@ plot_lines <- function(d = prison_pop, e = events, set_year){
              pch = 20, size = 3) +
   # match map colors -- purples are events that lead to higher # prison inmates
     # and oranges are events that lead to lower # prison inmates
-  scale_color_viridis_d(option = "inferno",
-            begin = 0.8, end = 0.2)
+  scale_color_manual(values = c("chocolate3", "purple4"))
 }
 #plot_lines(set_year = 2020) 
 
@@ -66,9 +65,8 @@ plot_events <- function(e = events, set_year){
            size = 0.1) +
     geom_label() +
     theme_void() +
-    scale_color_viridis_d(option = "inferno",
-                          begin = 0.8, end = 0.2) +
-    scale_fill_manual(values = c("white", alpha("black", 0.25))) + # highlight same color as map background
+    scale_color_manual(values = c("chocolate3", "purple4")) +
+    scale_fill_manual(values = c("white", alpha("yellow1", 0.4))) + # highlight same color as map background
     guides(color = F,
            fill = F)
 }
