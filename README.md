@@ -42,8 +42,9 @@ Dowloaded from California Department of Corrections and Rehabilitation Fig 1.2 i
 https://www.cdcr.ca.gov/research/wp-content/uploads/sites/174/2020/01/201812_DataPoints.pdf
 - original pdf saved as data/Data_Points-Dec-2018.pdf
 
-##Filled in data: Data we had to pull individually
-###Missing prison addresses (all accessed 27 September 2020)
+## Filled in data: Data we had to pull individually
+
+### Missing prison addresses (all accessed 27 September 2020)
  - Northern California Women's Facility: https://rs.locationshub.com/location_detail.aspx?id=050-6834&page=13&user=50&cat=cpxuaotmb
 - Pitchess Detention Facility: https://locator.lacounty.gov/lac/Location/3036062/los-angeles-county-sheriff---pitchess-detention-center-north-facility
 - Rio Cosumnes Correctional Facility: https://www.sacsheriff.com/Pages/Organization/RCCC/RCCC.aspx
@@ -51,22 +52,22 @@ https://www.cdcr.ca.gov/research/wp-content/uploads/sites/174/2020/01/201812_Dat
 - No address for Female Rehabilitative Community Correctional Center (FRCC) in Bakersfield so random Bakersfield zip code chosen
 
 
-###Manual geocoding of prisons that produced erroroneous latitudes & longitudes when geocoding with tidygeocoder: (prisons: California Correctional Institution, California Correctional Center, High Desert State Prison, California Men’s Colony, Mule Creek State Prison)
+### Manual geocoding of prisons that produced erroroneous latitudes & longitudes when geocoding with tidygeocoder: (prisons: California Correctional Institution, California Correctional Center, High Desert State Prison, California Men’s Colony, Mule Creek State Prison)
 https://developers.google.com/maps/documentation/geocoding/overview
 
-#Three county jail facilities were missing design capacity data. One, Santa Rita Jail, had total capacity in one year, but not in others. We copied capacity for that year into all years for that institution. The other two institutions (Pitchess Detention Center and Rio Cosumnes Correctional Center), we filled the "design capacity" column with "NA".
+# Three county jail facilities were missing design capacity data. One, Santa Rita Jail, had total capacity in one year, but not in others. We copied capacity for that year into all years for that institution. The other two institutions (Pitchess Detention Center and Rio Cosumnes Correctional Center), we filled the "design capacity" column with "NA".
 
 
-# Analysis steps and scripts
+## Analysis steps and scripts
 
-## Prison Population Map
+### Prison Population Map
 1. Pull prison occupancy data from .pdfs, clean into a table, and save to .csv file (1995-2020) | Script: get_occupancy_from_pdf.R 
 2. Clean prison occupancy csv and save to .RDS; includes labeling by percent occupancy bin, male/female, prison/county jail | Script: occupancy_cleaner.R
 3. Download prison location data by scraping CA Corrections website and then geocoding addresses. Some missing addresses must be manually entered, and some erroneous locations need to be manually fixed. Save to .RDS | Script: lat_long_scrape.R
 4. Merge geocodes with prison occupancy data | Script: merge_data.R
 5. Plot a map by year of prison occupancy per prison | Script: plot_CA_prisonpops.R
 
-## Total Prison Population Per 100,000
+### Total Prison Population Per 100,000
 1. Read total California population data from .csvs and .xlsx files, integrate into a single text file | Script: get_CA_total_population_size.R
 2. Read total CA prison population data from .pdfs and .png files | Script: get_historical_totals_from_pdf.R
 3. Plot lines plot of ratios of CA prison populations per total population, linked with major CA events | Script: plot_lines_historical_counts.R
