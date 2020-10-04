@@ -73,4 +73,5 @@ Three county jail facilities were missing design capacity data. One, Santa Rita 
 2. Read total CA prison population data from .pdfs and .png files | Script: get_historical_totals_from_pdf.R
 3. Plot lines plot of ratios of CA prison populations per total population, linked with major CA events | Script: plot_lines_historical_counts.R
 
-
+### Rshiny
+1. With each of the plots, combine plots into a single large plot and integrate into a shiny slider | Script: app.R
