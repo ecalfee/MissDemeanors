@@ -7,7 +7,7 @@ require(here) # paths relative to project directory "MissDemeanors/"
 plot_map <- function(set_year, state_polygon, data){
   # filter to current year
   data_yr <- data %>% dplyr::filter(Year == set_year)
-  #  jitter <- position_jitter(width = 0.15, height = 0.15, seed = 100)
+  #jitter <- position_jitter(width = 0.15, height = 0.15, seed = 100)
   jitter <- position_jitter(width = 0, height = 0, seed = 100)
   
   ggplot() + geom_polygon(data = state_polygon, 
@@ -26,7 +26,7 @@ plot_map <- function(set_year, state_polygon, data){
                        name="Percent Occupancy",
                        labels=c("0-90%", "90-100%", "100-125%", "125-150%", "150-200%", "200-250%", "250-300%")) +
   scale_color_viridis_d(option = "inferno", direction = -1, drop = FALSE) + #color bubbles
-  guides(fill = guide_legend(order=1, override.aes = list(alpha = 0.85)),
+  guides(fill = guide_legend(order=1, override.aes = list(alpha = 0.8, size = 5)),
          size = guide_legend(order=2),
          color = FALSE) + #make sure that legends are in a consistent order
   geom_text() +
@@ -51,8 +51,10 @@ plot_map <- function(set_year, state_polygon, data){
     theme_void()  #turn back to #theme_classic if you want axes on
 }
 
+
+
 # test by plotting 1 year (2020)
 # full_data <- readRDS(here("data/full_data.RDS"))
 # CA_polygon = ggplot2::map_data("state")  %>% # united states data
-#   filter(., region == "california") 
-# plot_map(set_year = 2006, state_polygon = CA_polygon, data = full_data)
+#  filter(., region == "california")
+plot_map(set_year = 2006, state_polygon = CA_polygon, data = full_data)
