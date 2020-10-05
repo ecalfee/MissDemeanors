@@ -4,6 +4,12 @@ require(ggplot2)
 require(maps)
 require(here) # paths relative to project directory "MissDemeanors/"
 
+# load data to map
+map_data <- readRDS(here("data/full_data.RDS")) %>%
+  mutate(Year = as.integer(Year))
+CA_polygon = ggplot2::map_data("state")  %>% # united states data
+  filter(., region == "california") 
+
 plot_map <- function(set_year, state_polygon, data){
   # filter to current year
   data_yr <- data %>% dplyr::filter(Year == set_year)
@@ -52,7 +58,4 @@ plot_map <- function(set_year, state_polygon, data){
 
 
 # test by plotting 1 year (2020)
-# full_data <- readRDS(here("data/full_data.RDS"))
-# CA_polygon = ggplot2::map_data("state")  %>% # united states data
-#  filter(., region == "california")
-# plot_map(set_year = 2006, state_polygon = CA_polygon, data = full_data)
+# plot_map(set_year = 2006, state_polygon = CA_polygon, data = map_data)
