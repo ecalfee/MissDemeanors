@@ -7,28 +7,26 @@ require(here) # paths relative to project directory "MissDemeanors/"
 plot_map <- function(set_year, state_polygon, data){
   # filter to current year
   data_yr <- data %>% dplyr::filter(Year == set_year)
-  #jitter <- position_jitter(width = 0.15, height = 0.15, seed = 100)
-  jitter <- position_jitter(width = 0, height = 0, seed = 100)
-  
+
   ggplot() + geom_polygon(data = state_polygon, 
                           aes(x = long, y = lat, group = group), 
                           alpha = 0.25) + #plot of California
   geom_point(data = data_yr, 
              aes(x = long, y = lat, fill = percent_bin, 
                  size = Design_capacity, color = percent_bin), 
-             alpha = 0.75, shape = 21, 
-             position = jitter) + #add bubbles
-  scale_size_continuous(name = "Prison Size\n(# inmates at capacity)",
+             alpha = 0.75, shape = 21) + # add bubbles for each prison
+  scale_radius(name = "Prison Size\n(# inmates at capacity)",
                     breaks = c(1000, 3000, 5000),
                     limits = c(0, 6000),
+                    range = c(1, 10),
                     labels = c(1000, 3000, 5000)) + 
   scale_fill_viridis_d(option = "inferno", direction = -1, drop = FALSE, 
                        name="Percent Occupancy",
                        labels=c("0-90%", "90-100%", "100-125%", "125-150%", "150-200%", "200-250%", "250-300%")) +
   scale_color_viridis_d(option = "inferno", direction = -1, drop = FALSE) + #color bubbles
-  guides(fill = guide_legend(order=1, override.aes = list(alpha = 0.8, size = 5)),
+  guides(fill = guide_legend(order=1, override.aes = list(alpha = 0.8, size = 7)),
          size = guide_legend(order=2),
-         color = FALSE) + #make sure that legends are in a consistent order
+         color = FALSE) + # make sure that legends are in a consistent order
   geom_text() +
   annotate("text", label = paste("Year:", set_year), 
            x = -117.0, y = 42.0, 
@@ -57,4 +55,4 @@ plot_map <- function(set_year, state_polygon, data){
 # full_data <- readRDS(here("data/full_data.RDS"))
 # CA_polygon = ggplot2::map_data("state")  %>% # united states data
 #  filter(., region == "california")
-plot_map(set_year = 2006, state_polygon = CA_polygon, data = full_data)
+# plot_map(set_year = 2006, state_polygon = CA_polygon, data = full_data)

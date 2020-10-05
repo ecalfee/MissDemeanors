@@ -48,8 +48,8 @@ combine_plots <- function(set_year){
                                            # arrange plot 1 in row 1 and plot 2 in row 2 (only 1 column here)
                                            layout_matrix = rbind(c(1,3), c(2,3)),
                                            # set relative heights and widths of plots in the layout matrix
-                                           heights = c(4, 3),
-                                           widths = c(2, 1))
+                                           heights = c(5, 3),
+                                           widths = c(4, 1))
   
   return(plots_together)
 }
@@ -58,9 +58,9 @@ combine_plots <- function(set_year){
 ui <- fluidPage(
   # title
   titlePanel("California Prison Population Through Time"), #places the title
-  plotOutput("myMap"), #places the main map plot
-  hr(),hr(),hr(),hr(),hr(),hr(), #adds space so that the slider will be under the plot
- fluidRow( #creates slider
+  fluidRow(plotOutput("myMap")), #places the main map plot
+  hr(),hr(),hr(),hr(), #adds space so that the slider will be under the plot
+  fluidRow( #creates slider
    column(6, offset = 0.5,
           wellPanel(sliderInput(inputId = "Year", 
                         label = "Change Year", 
@@ -70,7 +70,7 @@ ui <- fluidPage(
                         # add a 'play' button for animating through years
                         animate = animationOptions(interval = 3000), # default is 1000, here we slow down animations
                         sep = "" # no comma in dates at thousands spot
-   ))), 
+   )))
  )
 )
 
@@ -79,7 +79,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$myMap <- renderPlot(combine_plots(set_year = input$Year),
                              # fixing height and width of plot
-                             width = 700, height = 550)
+                             width = 1000, height = 500)
 }
 
 
