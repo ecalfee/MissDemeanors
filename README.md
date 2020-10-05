@@ -1,6 +1,7 @@
-# Team MissDemeanors
-## Erin Calfee, Darien Satterfield, & Katherine Corn
+# Prop 20: Possible impact on overcrowding in California prisons
+## Team MissDemeanors: Erin Calfee, Darien Satterfield, & Katherine Corn
 # California Proposition 20: Criminal Sentencing, Parole, and DNA Collection Initiative (2020)
+
 ## Questions:
 - What is the historical context for Prop. 20? Does California currently have relatively fewer/shorter sentences or more/longer senetences?
 - How much room does the California prison system have for an increase in inmates?
