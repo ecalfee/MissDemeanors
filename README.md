@@ -1,6 +1,8 @@
-# Prop 20: Possible impact on overcrowding in California prisons
-## Team MissDemeanors: Erin Calfee, Darien Satterfield, & Katherine Corn
-# California Proposition 20: Criminal Sentencing, Parole, and DNA Collection Initiative (2020)
+# California Proposition 20: Possible impact on overcrowding in California prisons
+## Team MissDemeanors
+## Erin Calfee, Darien Satterfield, & Katherine Corn
+
+##  Prop 20: Criminal Sentencing, Parole, and DNA Collection Initiative (2020)
 
 ## Questions:
 - What is the historical context for Prop. 20? Does California currently have relatively fewer/shorter sentences or more/longer senetences?
@@ -43,14 +45,12 @@ Dowloaded from California Department of Corrections and Rehabilitation Fig 1.2 i
 https://www.cdcr.ca.gov/research/wp-content/uploads/sites/174/2020/01/201812_DataPoints.pdf
 - original pdf saved as data/Data_Points-Dec-2018.pdf
 
-## Filled in data: Data we had to pull individually
-
 ### Missing prison addresses (all accessed 27 September 2020)
  - Northern California Women's Facility: https://rs.locationshub.com/location_detail.aspx?id=050-6834&page=13&user=50&cat=cpxuaotmb
 - Pitchess Detention Facility: https://locator.lacounty.gov/lac/Location/3036062/los-angeles-county-sheriff---pitchess-detention-center-north-facility
 - Rio Cosumnes Correctional Facility: https://www.sacsheriff.com/Pages/Organization/RCCC/RCCC.aspx
 - San Bruno County Jail: https://lightinprison.org/us/ca/institutions/san-francisco-county-jail-5/
-- No address for Female Rehabilitative Community Correctional Center (FRCC) in Bakersfield so random Bakersfield zip code chosen
+- No address for Female Rehabilitative Community Correctional Center (FRCC) in Bakersfield so a random Bakersfield zip code was chosen
 
 
 ### Manual geocoding
