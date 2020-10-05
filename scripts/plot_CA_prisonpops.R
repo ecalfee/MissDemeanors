@@ -26,7 +26,7 @@ plot_map <- function(set_year, state_polygon, data){
                        name="Percent Occupancy",
                        labels=c("0-90%", "90-100%", "100-125%", "125-150%", "150-200%", "200-250%", "250-300%")) +
   scale_color_viridis_d(option = "inferno", direction = -1, drop = FALSE) + #color bubbles
-  guides(fill = guide_legend(order=1, override.aes = list(alpha = 0.8, size = 5)),
+  guides(fill = guide_legend(order=1, override.aes = list(alpha = 0.75, size = 5)),
          size = guide_legend(order=2),
          color = FALSE) + #make sure that legends are in a consistent order
   geom_text() +
@@ -57,4 +57,4 @@ plot_map <- function(set_year, state_polygon, data){
 # full_data <- readRDS(here("data/full_data.RDS"))
 # CA_polygon = ggplot2::map_data("state")  %>% # united states data
 #  filter(., region == "california")
-plot_map(set_year = 2006, state_polygon = CA_polygon, data = full_data)
+plot_map(set_year = 2020, state_polygon = CA_polygon, data = full_data)
