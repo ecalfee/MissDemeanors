@@ -23,29 +23,15 @@ combine_plots <- function(set_year){
   # get events/legislation names
   events_text <- plot_events(set_year = set_year)
   # put plots together
-  # plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons + theme(legend.position = "none")),
-  #                                                       cowplot::get_legend(map_prisons),
-  #                                                       ggplotGrob(line_plot)),
-  #                                          layout_matrix = rbind(c(1,2),
-  #                                                                c(3, 3)),
-  #                                          heights = c(4, 1),
-  #                                          widths = c(4, 1))
-  # plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons), 
-  #                                                       ggplotGrob(line_plot)),
-  #                                          # arrange plot 1 in row 1 and plot 2 in row 2 (only 1 column here)
-  #                                          layout_matrix = rbind(c(1), c(2)),
-  #                                          # set relative heights and widths of plots in the layout matrix
-  #                                          heights = c(5, 3),
-  #                                          widths = c(1))
-  plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons), 
+  plots_together = gridExtra::grid.arrange(grobs = list(ggplotGrob(map_prisons + theme(legend.position = "none")),
+                                                        cowplot::get_legend(map_prisons),
                                                         ggplotGrob(line_plot),
                                                         ggplotGrob(events_text)),
-                                           # arrange plot 1 in row 1 and plot 2 in row 2 (only 1 column here)
-                                           layout_matrix = rbind(c(1,3), c(2,3)),
-                                           # set relative heights and widths of plots in the layout matrix
-                                           heights = c(5, 3),
-                                           widths = c(4, 1))
-  
+                                           layout_matrix = rbind(c(1, 2, 4),
+                                                                 c(NA, NA, NA), # added white space
+                                                                 c(3, 3, 3)),
+                                           heights = c(4, 0.2, 2),
+                                           widths = c(4, 1.2, 2))
   return(plots_together)
 }
 
@@ -74,7 +60,7 @@ ui <- fluidPage(
 server <- function(input, output) {
   output$myMap <- renderPlot(combine_plots(set_year = input$Year),
                              # fixing height and width of plot
-                             width = 1000, height = 500)
+                             width = 1100, height = 500)
 }
 
 
