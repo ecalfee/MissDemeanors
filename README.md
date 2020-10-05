@@ -6,7 +6,7 @@
 - How much room does the California prison system have for an increase in inmates?
 
 ## View the Rshiny App!
-https://darien-satterfield.shinyapps.io/MissDemeanors/
+https://ecalfee.shinyapps.io/missdemeanors/
 
 #Requirements for running code
 #1) must set working directory to the data folder, or open the first script from the scripts folder
@@ -19,7 +19,7 @@ https://darien-satterfield.shinyapps.io/MissDemeanors/
 #  [1] maps_3.3.0         ggplot2_3.3.2      readxl_1.3.1       tidygeocoder_1.0.1 rvest_0.3.5       
 #  [6] xml2_1.3.2         readr_1.3.1        here_0.1           stringr_1.4.0      pdftools_2.3.1    
 # [11] tidyr_1.1.0        dplyr_1.0.2       
-# 
+#
 # loaded via a namespace (and not attached):
 #  [1] Rcpp_1.0.5        pillar_1.4.6      compiler_4.0.2    cellranger_1.1.0  tools_4.0.2      
 #  [6] jsonlite_1.7.1    lifecycle_0.2.0   tibble_3.0.3      gtable_0.3.0      pkgconfig_2.0.3  
@@ -27,8 +27,8 @@ https://darien-satterfield.shinyapps.io/MissDemeanors/
 # [16] gridExtra_2.3     withr_2.3.0       httr_1.4.2        hms_0.5.3         generics_0.0.2   
 # [21] vctrs_0.3.4       askpass_1.1       rprojroot_1.3-2   grid_4.0.2        cowplot_1.0.0    
 # [26] tidyselect_1.1.0  glue_1.4.2        data.table_1.12.8 qpdf_1.1          R6_2.4.1         
-# [31] fansi_0.4.1       selectr_0.4-2     purrr_0.3.4       magrittr_1.5      backports_1.1.10 
-# [36] scales_1.1.1      ellipsis_0.3.1    assertthat_0.2.1  mime_0.9          colorspace_1.4-1 
+# [31] fansi_0.4.1       selectr_0.4-2     purrr_0.3.4       magrittr_1.5      backports_1.1.10
+# [36] scales_1.1.1      ellipsis_0.3.1    assertthat_0.2.1  mime_0.9          colorspace_1.4-1
 # [41] utf8_1.1.4        tinytex_0.24      stringi_1.4.6     munsell_0.5.0     crayon_1.3.4     
 
 ## Data Sources
