@@ -1,7 +1,7 @@
 # Team MissDemeanors
 ## Erin Calfee, Darien Satterfield, & Katherine Corn
 # California Proposition 20: Criminal Sentencing, Parole, and DNA Collection Initiative (2020)
-## Questions: 
+## Questions:
 - What is the historical context for Prop. 20? Does California currently have relatively fewer/shorter sentences or more/longer senetences?
 - How much room does the California prison system have for an increase in inmates?
 
@@ -13,7 +13,7 @@ https://darien-satterfield.shinyapps.io/MissDemeanors/
 - California Department of Corrections and Rehabilitation website https://www.cdcr.ca.gov/facility-locator/adult-institutions
 
 ### Total California Population Data
-- 2020 California Population Estimate Dept. of Finance 
+- 2020 California Population Estimate Dept. of Finance
 http://www.dof.ca.gov/Forecasting/Demographics/Estimates/e-1/documents/E-1_2020_InternetVersion.xlsx
 - 1900-2019 California Populaiton Estimates Dept. of Finance
 http://www.dof.ca.gov/Forecasting/Demographics/Estimates/E-7/documents/E-7_Report_1900-July_2019w.xlsx
@@ -23,7 +23,7 @@ https://www.census.gov/history/pdf/california_res_pop-jan2018.pdf
 
 ### Total California Prison Population Data
 The first state prison opened in 1851 and 3 historical reports contain summaries covering all years 1851-2000, after which the more modern yearly reports of inmate totals by facility
-These public reports were obtained by emailing the Office of Research Data Concierge Service: data.requests@cdcr.ca.gov 
+These public reports were obtained by emailing the Office of Research Data Concierge Service: data.requests@cdcr.ca.gov
 - data/calprisd/calprisd1851_1945.pdf
 - data/calprisd/CalPrisd2000.pdf
 - data/calprisd/calprisd1960.pdf, from which we made a screenshot image of the relevant table:
@@ -32,8 +32,8 @@ data/calprisd/calprisd1960_Tbl1_pg18_total_prison_pop.png
 
 ### Individual Prison Occupancy Data
 The California Dept. of Corrections and Rehabilitation maintains monthly prison population reports for 1989-present
-These public reports were obtained by emailing the Office of Research Data Concierge Service: data.requests@cdcr.ca.gov 
-We obtained reports for the month of July 1989-2020. We plot this data starting in 1995 because earlier reports used different facility naming conventions.
+These public reports were obtained by emailing the Office of Research Data Concierge Service: data.requests@cdcr.ca.gov
+We obtained reports for the month of July 1989-2020. We extract and plot this data starting in 1995 because earlier reports used different facility naming conventions.
 We additionally use 1990-2020 reports for total inmate population numbers for recent years.
 - original PDFs saved in data/CA_prison_pop_reports/
 
@@ -52,25 +52,25 @@ https://www.cdcr.ca.gov/research/wp-content/uploads/sites/174/2020/01/201812_Dat
 - No address for Female Rehabilitative Community Correctional Center (FRCC) in Bakersfield so random Bakersfield zip code chosen
 
 
-### Manual geocoding 
+### Manual geocoding
 A few facilities produced errors latitudes & longitudes when geocoding with tidygeocoder (prisons: California Correctional Institution, California Correctional Center, High Desert State Prison, California Men’s Colony, Mule Creek State Prison)
 https://developers.google.com/maps/documentation/geocoding/overview
 
-Three county jail facilities were missing design capacity data. One, Santa Rita Jail, had total capacity in one year, but not in others. We copied capacity for that year into all years for that institution. The other two institutions (Pitchess Detention Center and Rio Cosumnes Correctional Center), we filled the "design capacity" column with "NA".
+Three county jail facilities were missing design capacity data. One, Santa Rita Jail, had total capacity in one year, but not in others. We copied capacity for that year into all years for that institution. The other two institutions (Pitchess Detention Center and Rio Cosumnes Correctional Center), we filled the "design capacity" column with "NA". While all inmates are included in the total population, we don't plot any of the jail facilities on the map because we do not have data on the other jail inmates, and therefore % capacity.
 
 
 ## Analysis steps and scripts
 
 ### Prison Population Map
-1. Pull prison occupancy data from .pdfs, clean into a table, and save to .csv file (1995-2020) | Script: get_occupancy_from_pdf.R 
+1. Pull prison occupancy data from .pdfs, clean into a table, and save to .csv file (1995-2020) | Script: get_occupancy_from_pdf.R
 2. Clean prison occupancy csv and save to .RDS; includes labeling by percent occupancy bin, male/female, prison/county jail | Script: occupancy_cleaner.R
 3. Download prison location data by scraping CA Corrections website and then geocoding addresses. Some missing addresses must be manually entered, and some erroneous locations need to be manually fixed. Save to .RDS | Script: lat_long_scrape.R
 4. Merge geocodes with prison occupancy data | Script: merge_data.R
 5. Plot a map by year of prison occupancy per prison | Script: plot_CA_prisonpops.R
 
 ### Total Prison Population Per 100,000
-1. Read total California population data from .csvs and .xlsx files, integrate into a single text file | Script: get_CA_total_population_size.R
-2. Read total CA prison population data from .pdfs and .png files | Script: get_historical_totals_from_pdf.R
+1. Read total California population data from .csv and .xlsx files, integrate into a single text file. For years before 1900 we only have data every 10 years from the census (vs. annual population estimates from Dept. of Finance), so we impute annual estimates for these dates using linear approximation | Script: get_CA_total_population_size.R
+2. Read total CA prison population data from .pdf and .png files | Script: get_historical_totals_from_pdf.R
 3. Plot lines plot of ratios of CA prison populations per total population, linked with major CA events | Script: plot_lines_historical_counts.R
 
 ### Rshiny
