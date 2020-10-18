@@ -52,7 +52,10 @@ plot_map <- function(set_year, state_polygon, data){
     colour = ifelse(100*sum(data_yr$Total)/sum(data_yr$Design_capacity) >= 137.5, "red", "black")) + #add mean occupancy text
     theme_void() +  #turn back to #theme_classic if you want axes on
     theme(legend.title = element_text(size = 16),
-          legend.text = element_text(size = 14))
+          legend.text = element_text(size = 14),
+          legend.justification = 'top',
+          legend.margin = margin(12, 12, 12, 12)) +
+    coord_fixed() # fix aspect ratio of map
 }
 
 

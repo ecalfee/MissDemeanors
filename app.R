@@ -27,11 +27,11 @@ combine_plots <- function(set_year){
                                                         cowplot::get_legend(map_prisons),
                                                         ggplotGrob(line_plot),
                                                         ggplotGrob(events_text)),
-                                           layout_matrix = rbind(c(1, 2, 4),
+                                           layout_matrix = rbind(c(2, 1, 4),
                                                                  c(NA, NA, NA), # added white space
                                                                  c(3, 3, 3)),
-                                           heights = c(4, 0.2, 2),
-                                           widths = c(4, 1.2, 2))
+                                           heights = c(5.1, 0.1, 2),
+                                           widths = c(1.5, 3.2, 2))
   return(plots_together)
 }
 

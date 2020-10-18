@@ -3,6 +3,8 @@
 require(dplyr)
 require(ggplot2)
 require(here) # paths relative to project directory "MissDemeanors/"
+require(stringr)
+require(ggfittext)
 
 # read in data
 # prison population totals
@@ -54,12 +56,12 @@ plot_events <- function(e = events, set_year){
                   color = effect,
                   label = text), # highlight if legislation is current year
            x = 1) + # all in same column
-    geom_label(size = 5) +
+    geom_fit_text(place = "topleft", reflow = TRUE) + # left-align all text labels
     theme_void() +
     scale_color_manual(values = effect_colors) +
-    scale_fill_manual(values = c("white", alpha("yellow1", 0.4))) + # highlight same color as map background
-    guides(color = F,
-           fill = F)
+    guides(color = F) +
+    ggtitle("   Major Legislation") +
+    theme(legend.position = "bottom",
+      plot.title = element_text(size = 16, margin = margin(11, 0, 0, 0)))
 }
-#plot_events(set_year = 2000)  
-
+#plot_events(set_year = 2000)
