@@ -67,3 +67,5 @@ server <- function(input, output) {
 
 # shinyApp runs the app!
 shinyApp(ui = ui, server = server)
+
+# rsconnect::deployApp() 
