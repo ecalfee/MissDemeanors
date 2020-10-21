@@ -5,6 +5,7 @@
 require(shiny)
 require(ggplot2)
 require(maps)
+require(ggfittext)
 require(dplyr)
 library(gridExtra) # for combining multiple plots together
 library(cowplot) # for extracting legend from plots

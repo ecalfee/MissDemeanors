@@ -96,3 +96,4 @@ To run this code, open MissDemeanors as an R project and run the scripts in RStu
  here_0.1
  magick_2.4.0
  tesseract_4.1
+ ggfittext_0.9.0
